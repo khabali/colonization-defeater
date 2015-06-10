@@ -17,12 +17,12 @@ public class EntityFactory {
 	public static Entity createTestEntity(World world) {
 		// entity physics, we want to create a body for the entity
 		BodyDef bodyDef = new BodyDef(); // First we create a body definition
-		bodyDef.type = BodyType.DynamicBody; // We set our body to dynamic
-		bodyDef.position.set(100, 300); // Set our body's starting position in the world
+		bodyDef.type = BodyType.StaticBody; // We set our body to dynamic
+		bodyDef.position.set(0, 0); // Set our body's starting position in the world
 		Body body = world.createBody(bodyDef); // Create our body in the world using our body definition
 		// Create a circle shape and set its radius to 6
 		CircleShape circle = new CircleShape();
-		circle.setRadius(6f);
+		circle.setRadius(32f);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
 		fixtureDef.density = 0.5f; 

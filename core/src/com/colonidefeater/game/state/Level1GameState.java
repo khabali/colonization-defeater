@@ -5,15 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.colonidefeater.game.World;
 import com.colonidefeater.game.entity.EntityFactory;
 import com.colonidefeater.game.input.GameInput;
-import com.colonidefeater.game.resources.AssetsManager;
+import com.colonidefeater.game.system.Box2dDebugRenderSystem;
 import com.colonidefeater.game.system.CameraSystem;
 import com.colonidefeater.game.system.SpriteRenderSystem;
 
 public class Level1GameState extends GameStateAdapter {
 
 	private World world;
-
-
+	
 	public Level1GameState(GameStateManager gsm) {
 		super(gsm);
 		init();
@@ -24,6 +23,7 @@ public class Level1GameState extends GameStateAdapter {
 		world = new World(new Vector2(0, -10), true);	
 		world.setSystem(new CameraSystem());
 		world.setSystem(new SpriteRenderSystem());
+		world.setSystem(new Box2dDebugRenderSystem());
 		world.initialize();
 		
 		EntityFactory.createTestEntity(world);
@@ -37,6 +37,7 @@ public class Level1GameState extends GameStateAdapter {
 	@Override
 	public void draw() {
 		world.process(Gdx.graphics.getDeltaTime());
+		
 	}
 	
 	@Override
