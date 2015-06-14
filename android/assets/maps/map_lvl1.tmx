@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="desert" tilewidth="16" tileheight="16">
+  <image source="tiles/desert.png" width="16" height="16"/>
+ </tileset>
+ <tileset firstgid="2" name="road" tilewidth="16" tileheight="16">
+  <image source="tiles/road.png" width="16" height="16"/>
+ </tileset>
+ <tileset firstgid="3" name="white" tilewidth="16" tileheight="16">
+  <image source="tiles/white.png" width="16" height="16"/>
+ </tileset>
+ <layer name="road" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztlFEKxCAMRLXe/87LQqHiOtXE0rr1PZiPqhmTQRoCAAAAAAAAwLqkXd7alajN+2R+I3ffTQq//Sax7vVTvrVzrf3Z+PYXw9Fnz4wWP7WnzuXrymcmyoxq/Vvy5P31q8dP7b35/Y3mt9r7Iz8/G0LoFcr/OT175TlrfenRqj/zvKJG9VKbWd2JbIq71He+7vUfqZ9deV6tWa0ZxOKOVv0/Zg1+yA+e5gOa1gZE
+  </data>
+ </layer>
+ <layer name="forground" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzbEJAEAIwEDdf+lvnEDwUbiD1IkAAAAAAAAAAJiX1TXZ6MdD0o4eJ84BAA==
+  </data>
+ </layer>
+ <objectgroup name="player">
+  <object x="304" y="108" width="64" height="64">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="ground">
+  <object x="-1.33333" y="382.667">
+   <polyline points="-9.33333,-6.66667 1280,-6.66666"/>
+  </object>
+ </objectgroup>
+</map>

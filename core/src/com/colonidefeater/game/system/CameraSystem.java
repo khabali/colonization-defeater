@@ -1,25 +1,71 @@
 package com.colonidefeater.game.system;
 
-import com.artemis.systems.VoidEntitySystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.colonidefeater.game.debug.GameLogger;
+import static com.colonidefeater.game.utils.Constants.PPM;
+import static com.colonidefeater.game.utils.Constants.SCALE;
+import static com.colonidefeater.game.utils.Constants.V_HEIGHT;
+import static com.colonidefeater.game.utils.Constants.V_WIDTH;
 
-public class CameraSystem extends VoidEntitySystem {
+import com.artemis.Aspect;
+import com.artemis.ComponentMapper;
+import com.artemis.Entity;
+import com.artemis.annotations.Wire;
+import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.math.Vector2;
+import com.colonidefeater.game.component.PhysicsCpt;
+import com.colonidefeater.game.component.PlayerControlled;
+import com.colonidefeater.game.handlers.GameCamera;
+import com.colonidefeater.game.input.GameInput;
+import com.colonidefeater.game.utils.Constants;
 
-	public final OrthographicCamera camera;
+@Wire
+public class CameraSystem extends EntityProcessingSystem {
 
-	public CameraSystem() {
-		
-		GameLogger.debug("", "game size w : "+Gdx.graphics.getWidth() + " hieght : "+ Gdx.graphics.getHeight());
-		this.camera = new OrthographicCamera(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
-		this.camera.position.set(Gdx.graphics.getWidth() / 2,
-				Gdx.graphics.getHeight() / 2, 0);
+	/**
+	 * The game camera
+	 */
+	public GameCamera gameCamera;
+	public GameCamera box2dCamera;
+
+	private ComponentMapper<PhysicsCpt> physicsCptMapper;
+
+	public CameraSystem(int xMax, int yMax) {
+		super(Aspect.getAspectForOne(PlayerControlled.class));
+		gameCamera = new GameCamera();
+		gameCamera.setToOrtho(false, V_WIDTH * SCALE, V_HEIGHT * SCALE);
+		gameCamera.setBounds(0, xMax, 0, yMax);
+
+		//
+		box2dCamera = new GameCamera();
+		box2dCamera.setToOrtho(false, V_WIDTH * SCALE / PPM, V_HEIGHT * SCALE / PPM);
+		box2dCamera.setBounds(0, xMax / PPM, 0, yMax / PPM);
 	}
 
 	@Override
-	protected void processSystem() {
+	protected void process(Entity e) {
+
+		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
+		final Vector2 playerPosition = physicsCpt.body.getPosition();
+
+		// FIXME -- Debug to be deleted
+		if (GameInput.getInstance().getAButton().isPressed()) {
+			playerPosition.x += 30.5f / PPM;
+			physicsCpt.body.applyForceToCenter(0, 50f, true);
+			physicsCpt.body.setTransform(playerPosition, 0);
+		}
+		if (GameInput.getInstance().getZButton().isPressed()) {
+			playerPosition.x -= 30.5f / PPM;
+			physicsCpt.body.applyForceToCenter(0, 50f, true);
+			physicsCpt.body.setTransform(playerPosition, 0);
+		}
+
+		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 4.0f);
+		gameCamera.update();
+
+		// box2d Camera
+		if (Constants.isBox2dDebugEnabled) {
+			box2dCamera.setXPosition(playerPosition.x + box2dCamera.viewportWidth / 4.0f);
+			box2dCamera.update();
+		}
 	}
 
 }

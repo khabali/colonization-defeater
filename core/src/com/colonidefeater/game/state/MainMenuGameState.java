@@ -24,13 +24,11 @@ public class MainMenuGameState extends GameStateAdapter {
 		// load assets
 		AssetsManager.load();
 		while (!AssetsManager.manager.update()) {
-			Gdx.app.debug(tag, "Loading assets : "+ (int) (AssetsManager.manager.getProgress() * 100) + " %");
+			Gdx.app.debug(tag, "Loading assets : " + (int) (AssetsManager.manager.getProgress() * 100) + " %");
 		}
-		
-		Gdx.app.debug(tag, "Loading assets : "+ (int) (AssetsManager.manager.getProgress() * 100) + " %");
+		Gdx.app.debug(tag, "Loading assets : " + (int) (AssetsManager.manager.getProgress() * 100) + " %");
 
-		background = AssetsManager.manager.get(AssetsManager.MENU_BG,
-				Texture.class);
+		background = AssetsManager.manager.get(AssetsManager.MENU_BG, Texture.class);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, background.getWidth(), background.getHeight());
 

@@ -59,6 +59,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		gsm.resize(width, height);
+		GameLogger.debug(tag, "resize calles - screen H : " + height + " W : " + width);
 	}
 
 	@Override

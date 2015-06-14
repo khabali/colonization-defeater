@@ -10,27 +10,24 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.StateCpt;
 import com.colonidefeater.game.component.TextureCpt;
+import com.colonidefeater.game.utils.Constants;
 
 @Wire
 public class SpriteRenderSystem extends EntityProcessingSystem {
-	ComponentMapper<TextureCpt> spriteMapper;
-	ComponentMapper<PhysicsCpt> physicsMapper;
-	ComponentMapper<StateCpt> stateMapper;
+
+	private final String tag = getClass().getName();
+	private ComponentMapper<TextureCpt> spriteMapper;
+	private ComponentMapper<PhysicsCpt> physicsMapper;
+	private ComponentMapper<StateCpt> stateMapper;
 
 	// auto wired
 	private CameraSystem cameraSystem;
 
 	private SpriteBatch batch;
-	private Animation animation;
 	private float frameTime = 0;
-
-	//
-	//
-	private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 	public SpriteRenderSystem() {
 		super(Aspect.getAspectForAll(TextureCpt.class));
@@ -51,19 +48,19 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 	protected void process(Entity e) {
 
 		// set camera
-		batch.setProjectionMatrix(cameraSystem.camera.combined);
-		TextureCpt texture = spriteMapper.get(e);
-		PhysicsCpt physics = physicsMapper.get(e);
+		batch.setProjectionMatrix(cameraSystem.gameCamera.combined);
+		final TextureCpt texture = spriteMapper.get(e);
+		final PhysicsCpt physics = physicsMapper.get(e);
 		if (stateMapper.has(e)) {
-			StateCpt state = stateMapper.get(e);
+			final StateCpt state = stateMapper.get(e);
 			texture.createSprites(state.currentState.name());
 		}
-		frameTime += Gdx.graphics.getDeltaTime();
-		Vector2 pos = physics.body.getPosition();
-		TextureRegion sprite = new Animation(0.090f, texture.spriteSet)
-				.getKeyFrame(frameTime, true);
-		batch.draw(sprite, pos.x, pos.y);
 
+		frameTime += Gdx.graphics.getDeltaTime();
+		final Vector2 pos = physics.body.getPosition();
+		final TextureRegion sprite = new Animation(0.090f, texture.spriteSet).getKeyFrame(frameTime, true);
+		batch.draw(sprite, (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2,
+				(pos.y * Constants.PPM) - sprite.getRegionHeight() / 2);
 	}
 
 	@Override
