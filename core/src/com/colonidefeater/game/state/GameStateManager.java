@@ -2,6 +2,8 @@ package com.colonidefeater.game.state;
 
 import java.util.Stack;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 public class GameStateManager {
 
 	// La liste des états gerés dans le jeux
@@ -10,9 +12,14 @@ public class GameStateManager {
 	public static final int STATE_LEVEL1 = 1;
 
 	private int currentGameState;
-	private Stack<GameState> states;
+	private final Stack<GameState> states;
 
-	public GameStateManager() {
+	private final Viewport viewPort;
+
+	public GameStateManager(Viewport viewPort) {
+
+		this.viewPort = viewPort;
+
 		states = new Stack<GameState>();
 		currentGameState = STATE_MENU;
 		loadState(currentGameState);
@@ -42,7 +49,7 @@ public class GameStateManager {
 	 */
 	public void update() {
 		if (!states.isEmpty()) {
-			GameState state = states.peek();
+			final GameState state = states.peek();
 			if (state != null) {
 				state.update();
 			}
@@ -54,7 +61,7 @@ public class GameStateManager {
 	 */
 	public void draw() {
 		if (!states.isEmpty()) {
-			GameState state = states.peek();
+			final GameState state = states.peek();
 			if (state != null) {
 				state.draw();
 			}
@@ -63,7 +70,7 @@ public class GameStateManager {
 
 	public void resize(int width, int height) {
 		if (!states.isEmpty()) {
-			GameState state = states.peek();
+			final GameState state = states.peek();
 			if (state != null) {
 				state.resize(width, height);
 			}
@@ -75,7 +82,7 @@ public class GameStateManager {
 	 */
 	public void pause() {
 		if (!states.isEmpty()) {
-			GameState state = states.peek();
+			final GameState state = states.peek();
 			if (state != null) {
 				state.pause();
 			}
@@ -87,7 +94,7 @@ public class GameStateManager {
 	 */
 	public void resume() {
 		if (!states.isEmpty()) {
-			GameState state = states.peek();
+			final GameState state = states.peek();
 			if (state != null) {
 				state.resume();
 			}
@@ -99,11 +106,15 @@ public class GameStateManager {
 	 */
 	public void dispose() {
 		for (int i = 0; i < states.size(); i++) {
-			GameState state = states.pop();
+			final GameState state = states.pop();
 			if (state != null) {
 				state.dispose();
 			}
 		}
+	}
+
+	public Viewport getViewPort() {
+		return viewPort;
 	}
 
 }

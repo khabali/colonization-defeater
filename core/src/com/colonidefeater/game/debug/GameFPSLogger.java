@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 
 public final class GameFPSLogger {
 
-	private static final boolean loggin = false;
+	private static final boolean loggin = true;
 	private static FPSLogger logger = new FPSLogger();
 
 	public static void log() {

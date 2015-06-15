@@ -11,12 +11,23 @@
  </tileset>
  <layer name="road" width="80" height="30">
   <data encoding="base64" compression="zlib">
-   eJztlFEKxCAMRLXe/87LQqHiOtXE0rr1PZiPqhmTQRoCAAAAAAAAwLqkXd7alajN+2R+I3ffTQq//Sax7vVTvrVzrf3Z+PYXw9Fnz4wWP7WnzuXrymcmyoxq/Vvy5P31q8dP7b35/Y3mt9r7Iz8/G0LoFcr/OT175TlrfenRqj/zvKJG9VKbWd2JbIq71He+7vUfqZ9deV6tWa0ZxOKOVv0/Zg1+yA+e5gOa1gZE
+   eJzt0csKQBEUQFHx//9sKjnCRLFW7W65XiUlAAAAAOBVWZI+rTTl7tuO92tme0T7jP7PzorWrt5hNG9n7sq9br+fJN0KAE5U0UAFyA==
   </data>
  </layer>
  <layer name="forground" width="80" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzbEJAEAIwEDdf+lvnEDwUbiD1IkAAAAAAAAAAJiX1TXZ6MdD0o4eJ84BAA==
+   eJzt0DEKACEMBEDz/09fYyE2SUSwuBlYBIlRMwYAAAAAAADwZzHzukfWe021LntXp7Z618kcYllj27/5p5N3d85ktZX57LPo9rzxJxERkU4+wH0B7g==
+  </data>
+ </layer>
+ <imagelayer name="bg_3" x="-4" y="-5" visible="0">
+  <image source="tiles/clouds.png"/>
+ </imagelayer>
+ <imagelayer name="bg_2" x="-1" y="99" visible="0">
+  <image source="tiles/mountains.png"/>
+ </imagelayer>
+ <layer name="bg_1" width="80" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztkkEOwCAIBGv8/5976WkjAhVNms4kpgcsy+JeFwAAAMA/6M+xal/WO6FlafRJ7St6Wa2IfjeO3mnyzcy3oud5rtJqUp/9M5t1tB9vhtN6O7Sa1K3dq2ZV/qr1PM+aT09L8zWbZ6Rh+ffeKLIT7aPfN3qj/VgzRb1F3zJyvB6Wn8w7ruh5d7L58/qM/FXmIZI/q9dK/qwe2fxF+uzMX3R/p/J30hsAAAAAAAAAANRzA+CfBHo=
   </data>
  </layer>
  <objectgroup name="player">
@@ -25,7 +36,7 @@
   </object>
  </objectgroup>
  <objectgroup name="ground">
-  <object x="-1.33333" y="382.667">
+  <object x="-1.33333" y="334">
    <polyline points="-9.33333,-6.66667 1280,-6.66666"/>
   </object>
  </objectgroup>

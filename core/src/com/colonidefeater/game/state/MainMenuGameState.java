@@ -56,6 +56,10 @@ public class MainMenuGameState extends GameStateAdapter {
 			gsm.setState(GameStateManager.STATE_LEVEL1);
 		}
 
+		if (GameInput.getInstance().getTouchButton().isTouched()) {
+			gsm.setState(GameStateManager.STATE_LEVEL1);
+		}
+
 		if (GameInput.getInstance().getEscapeButton().isPressed()) {
 			Gdx.app.exit();
 		}

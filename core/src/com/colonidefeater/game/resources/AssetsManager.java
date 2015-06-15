@@ -20,6 +20,8 @@ public class AssetsManager {
 
 	// Backgroundss
 	public static final String BG_SKY = "sky.png";
+	public static final String BG_MOUNTAINS = "maps/tiles/mountains.png";
+	public static final String BG_NUAGE = "maps/tiles/nuage.png";
 
 	// MAPS
 	public static final String MAP_LVL_1 = "maps/map_lvl1.tmx";
@@ -30,6 +32,8 @@ public class AssetsManager {
 
 		// Game Backgrounds
 		manager.load(BG_SKY, Texture.class);
+		manager.load(BG_MOUNTAINS, Texture.class);
+		manager.load(BG_NUAGE, Texture.class);
 
 		// sprites
 		manager.load(SOCCER_BALL, TextureAtlas.class);

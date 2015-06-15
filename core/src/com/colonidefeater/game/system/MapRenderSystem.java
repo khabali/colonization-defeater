@@ -9,36 +9,57 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.colonidefeater.game.handlers.ParallaxeBackground;
+import com.colonidefeater.game.utils.Constants;
 
 @Wire
 public class MapRenderSystem extends EntityProcessingSystem {
 
 	private final OrthogonalTiledMapRenderer tmRenderer;
-
-	private final OrthographicCamera bgCamera;
 	private final SpriteBatch sbatch;
-	private final Texture background;
+	private final Texture fixedBackground;
+	private final ParallaxeBackground[] backgrounds;
 
+	private final OrthographicCamera fixedBackgroundCam;
+	private final OrthographicCamera parallaxeBackgroundCam;
 	//
 	private CameraSystem cameraSystem;
 
-	public MapRenderSystem(TiledMap tiledMap, Texture bg) {
+	public MapRenderSystem(TiledMap tiledMap, Texture fixedBackground, ParallaxeBackground[] backgrounds) {
 		super(Aspect.getEmpty());
-		background = bg;
 		tmRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+		this.fixedBackground = fixedBackground;
+		this.backgrounds = backgrounds;
 
 		//
-		bgCamera = new OrthographicCamera();
-		bgCamera.setToOrtho(false, background.getWidth(), background.getHeight());
+		parallaxeBackgroundCam = new OrthographicCamera();
+		parallaxeBackgroundCam.setToOrtho(false, Constants.V_WIDTH * Constants.SCALE, Constants.V_HEIGHT
+				* Constants.SCALE);
+		//
+		fixedBackgroundCam = new OrthographicCamera();
+		fixedBackgroundCam.setToOrtho(false, fixedBackground.getWidth(), fixedBackground.getHeight());
 		sbatch = new SpriteBatch();
-		sbatch.setProjectionMatrix(bgCamera.combined);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
 	}
 
 	@Override
 	protected void process(Entity e) {
 
 		sbatch.begin();
-		sbatch.draw(background, 0, 0);
+
+		// fixe background layer
+		sbatch.setProjectionMatrix(fixedBackgroundCam.combined);
+		sbatch.draw(fixedBackground, 0, 0);
+
+		// parallaxe background layers
+		sbatch.setProjectionMatrix(parallaxeBackgroundCam.combined);
+		for (int i = 0; i < backgrounds.length; i++) {
+			backgrounds[i].render(sbatch, cameraSystem.gameCamera);
+		}
 		sbatch.end();
 
 		tmRenderer.setView(cameraSystem.gameCamera);

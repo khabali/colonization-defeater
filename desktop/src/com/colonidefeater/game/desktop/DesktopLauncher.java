@@ -11,9 +11,6 @@ public class DesktopLauncher {
 
 		final LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = Constants.TITLE;
-		cfg.width = Constants.V_WIDTH * Constants.SCALE;
-		cfg.height = Constants.V_HEIGHT * Constants.SCALE;
-
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }

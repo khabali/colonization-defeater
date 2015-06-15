@@ -6,11 +6,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.colonidefeater.game.debug.GameFPSLogger;
 import com.colonidefeater.game.debug.GameLogger;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.input.InputHandler;
 import com.colonidefeater.game.state.GameStateManager;
+import com.colonidefeater.game.utils.Constants;
 
 public class MyGdxGame extends ApplicationAdapter {
 
@@ -19,6 +22,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	private GameStateManager gsm;
 	private InputHandler inputHandler;
 
+	private Viewport viewPort;
+
 	@Override
 	public void create() {
 
@@ -26,15 +31,18 @@ public class MyGdxGame extends ApplicationAdapter {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		GameLogger.debug(tag, "Initialisation des logs : LEVEL DEBUG");
 
+		viewPort = new StretchViewport(Constants.V_WIDTH * Constants.SCALE, Constants.V_HEIGHT * Constants.SCALE);
+		viewPort.apply();
+
 		//
-		this.inputHandler = new InputHandler();
-		InputMultiplexer multiplexer = new InputMultiplexer();
+		inputHandler = new InputHandler();
+		final InputMultiplexer multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(inputHandler);
 		multiplexer.addProcessor(new GestureDetector(inputHandler));
 		Gdx.input.setInputProcessor(multiplexer);
 
 		// Initialisation du game state manager
-		gsm = new GameStateManager();
+		gsm = new GameStateManager(viewPort);
 
 		GameLogger.debug(tag, "Game created");
 	}

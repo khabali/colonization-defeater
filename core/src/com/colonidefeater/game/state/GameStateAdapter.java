@@ -12,7 +12,7 @@ public abstract class GameStateAdapter extends GameState {
 
 	@Override
 	public void resize(int width, int height) {
-
+		gsm.getViewPort().update(width, height);
 	}
 
 	@Override

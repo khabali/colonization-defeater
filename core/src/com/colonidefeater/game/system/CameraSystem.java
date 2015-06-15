@@ -47,7 +47,7 @@ public class CameraSystem extends EntityProcessingSystem {
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
 
 		// FIXME -- Debug to be deleted
-		if (GameInput.getInstance().getAButton().isPressed()) {
+		if (GameInput.getInstance().getAButton().isPressed() || GameInput.getInstance().getTouchButton().isTouched()) {
 			playerPosition.x += 30.5f / PPM;
 			physicsCpt.body.applyForceToCenter(0, 50f, true);
 			physicsCpt.body.setTransform(playerPosition, 0);
