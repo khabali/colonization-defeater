@@ -1,9 +1,7 @@
 package com.colonidefeater.game.system;
 
-import com.artemis.Aspect;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +11,7 @@ import com.colonidefeater.game.handlers.ParallaxeBackground;
 import com.colonidefeater.game.utils.Constants;
 
 @Wire
-public class MapRenderSystem extends EntityProcessingSystem {
+public class MapRenderSystem extends VoidEntitySystem {
 
 	private final OrthogonalTiledMapRenderer tmRenderer;
 	private final SpriteBatch sbatch;
@@ -26,7 +24,7 @@ public class MapRenderSystem extends EntityProcessingSystem {
 	private CameraSystem cameraSystem;
 
 	public MapRenderSystem(TiledMap tiledMap, Texture fixedBackground, ParallaxeBackground[] backgrounds) {
-		super(Aspect.getEmpty());
+		super();
 		tmRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		this.fixedBackground = fixedBackground;
 		this.backgrounds = backgrounds;
@@ -47,7 +45,7 @@ public class MapRenderSystem extends EntityProcessingSystem {
 	}
 
 	@Override
-	protected void process(Entity e) {
+	protected void processSystem() {
 
 		sbatch.begin();
 
@@ -65,4 +63,5 @@ public class MapRenderSystem extends EntityProcessingSystem {
 		tmRenderer.setView(cameraSystem.gameCamera);
 		tmRenderer.render();
 	}
+
 }

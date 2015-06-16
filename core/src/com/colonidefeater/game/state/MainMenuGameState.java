@@ -53,11 +53,11 @@ public class MainMenuGameState extends GameStateAdapter {
 	public void handleInput() {
 
 		if (GameInput.getInstance().getEnterButton().isPressed()) {
-			gsm.setState(GameStateManager.STATE_LEVEL1);
+			gsm.goToState(GameStateManager.STATE_LEVEL1);
 		}
 
 		if (GameInput.getInstance().getTouchButton().isTouched()) {
-			gsm.setState(GameStateManager.STATE_LEVEL1);
+			gsm.goToState(GameStateManager.STATE_LEVEL1);
 		}
 
 		if (GameInput.getInstance().getEscapeButton().isPressed()) {

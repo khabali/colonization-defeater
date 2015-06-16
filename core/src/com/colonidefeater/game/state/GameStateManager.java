@@ -27,6 +27,15 @@ public class GameStateManager {
 
 	public void setState(int stateCode) {
 		if (stateCode != currentGameState) {
+			final GameState removedState = states.pop();
+			removedState.dispose();
+			currentGameState = stateCode;
+			loadState(currentGameState);
+		}
+	}
+
+	public void goToState(int stateCode) {
+		if (stateCode != currentGameState) {
 			states.pop();
 			currentGameState = stateCode;
 			loadState(currentGameState);

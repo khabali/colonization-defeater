@@ -6,6 +6,7 @@ import static com.colonidefeater.game.utils.Constants.V_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -36,12 +37,12 @@ public class Level1GameState extends GameStateAdapter {
 	@Override
 	public void init() {
 
-		// -- Preparation du level (Map)
-		AssetsManager.loadMap(AssetsManager.MAP_LVL_1);
-		final TiledMap tiledMap = AssetsManager.manager.get(AssetsManager.MAP_LVL_1, TiledMap.class);
+		loadRessources();
 
-		// World game init
+		// -- World game init
 		world = new World(new Vector2(0, -7f), true);
+
+		final TiledMap tiledMap = AssetsManager.manager.get(AssetsManager.MAP_LVL_1, TiledMap.class);
 
 		// -- Camera system
 		final int width = (Integer) tiledMap.getProperties().get("width");
@@ -77,8 +78,19 @@ public class Level1GameState extends GameStateAdapter {
 		gameCamera = new GameCamera();
 		gameCamera.setToOrtho(false, V_WIDTH * SCALE, V_HEIGHT * SCALE);
 		gameCamera.setBounds(0, xMax, 0, yMax);
+	}
 
-		// EntityFactory.createTestEntity(world);
+	/**
+	 * Load level ressources
+	 */
+	private void loadRessources() {
+		AssetsManager.loadMap(AssetsManager.MAP_LVL_1);
+		AssetsManager.manager.load(AssetsManager.BG_SKY, Texture.class);
+		AssetsManager.manager.load(AssetsManager.SOCCER_BALL, TextureAtlas.class);
+
+		// Wait for ressource to load
+		while (!AssetsManager.manager.update()) {
+		}
 
 	}
 
@@ -104,6 +116,9 @@ public class Level1GameState extends GameStateAdapter {
 	@Override
 	public void dispose() {
 		super.dispose();
+		AssetsManager.manager.unload(AssetsManager.MAP_LVL_1);
+		AssetsManager.manager.unload(AssetsManager.SOCCER_BALL);
+		AssetsManager.manager.unload(AssetsManager.BG_SKY);
 	}
 
 }
