@@ -1,9 +1,5 @@
 package com.colonidefeater.game.state;
 
-import static com.colonidefeater.game.utils.Constants.SCALE;
-import static com.colonidefeater.game.utils.Constants.V_HEIGHT;
-import static com.colonidefeater.game.utils.Constants.V_WIDTH;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.colonidefeater.game.World;
 import com.colonidefeater.game.debug.GameLogger;
 import com.colonidefeater.game.entity.EntityFactory;
-import com.colonidefeater.game.handlers.GameCamera;
 import com.colonidefeater.game.handlers.ParallaxeBackground;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.resources.AssetsManager;
@@ -26,8 +21,6 @@ import com.colonidefeater.game.utils.Constants;
 public class Level1GameState extends GameStateAdapter {
 
 	private World world;
-
-	private GameCamera gameCamera;
 
 	public Level1GameState(GameStateManager gsm) {
 		super(gsm);
@@ -74,10 +67,6 @@ public class Level1GameState extends GameStateAdapter {
 
 		EntityFactory.createGround(world, tiledMap);
 		EntityFactory.createPlayer(world, tiledMap);
-
-		gameCamera = new GameCamera();
-		gameCamera.setToOrtho(false, V_WIDTH * SCALE, V_HEIGHT * SCALE);
-		gameCamera.setBounds(0, xMax, 0, yMax);
 	}
 
 	/**

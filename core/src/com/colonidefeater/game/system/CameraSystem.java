@@ -58,12 +58,12 @@ public class CameraSystem extends EntityProcessingSystem {
 			physicsCpt.body.setTransform(playerPosition, 0);
 		}
 
-		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 4.0f);
+		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 8.0f);
 		gameCamera.update();
 
 		// box2d Camera
 		if (Constants.isBox2dDebugEnabled) {
-			box2dCamera.setXPosition(playerPosition.x + box2dCamera.viewportWidth / 4.0f);
+			box2dCamera.setXPosition(playerPosition.x + box2dCamera.viewportWidth / 8.0f);
 			box2dCamera.update();
 		}
 	}
