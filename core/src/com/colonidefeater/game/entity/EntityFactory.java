@@ -34,6 +34,7 @@ public class EntityFactory {
 		final Shape shape = MapBodyBuilder.createPolyline(groundMapObject);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
+		fixtureDef.friction = 0.3f;
 		body.createFixture(fixtureDef);
 		shape.dispose();
 

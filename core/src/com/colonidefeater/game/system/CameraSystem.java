@@ -20,6 +20,8 @@ import com.colonidefeater.game.utils.Constants;
 @Wire
 public class CameraSystem extends EntityProcessingSystem {
 
+	private final String tag = getClass().getName();
+
 	/**
 	 * The game camera
 	 */
@@ -47,12 +49,12 @@ public class CameraSystem extends EntityProcessingSystem {
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
 
 		// FIXME -- Debug to be deleted
-		if (GameInput.getInstance().getAButton().isPressed() || GameInput.getInstance().getTouchButton().isTouched()) {
-			playerPosition.x += 30.5f / PPM;
-			physicsCpt.body.applyForceToCenter(0, 50f, true);
+		if (GameInput.isHolded(GameInput.RIGHT)) {
+			playerPosition.x += 1.5f / PPM;
+			physicsCpt.body.applyForceToCenter(0, 2f, true);
 			physicsCpt.body.setTransform(playerPosition, 0);
 		}
-		if (GameInput.getInstance().getZButton().isPressed()) {
+		if (GameInput.isPressed(GameInput.LEFT)) {
 			playerPosition.x -= 30.5f / PPM;
 			physicsCpt.body.applyForceToCenter(0, 50f, true);
 			physicsCpt.body.setTransform(playerPosition, 0);

@@ -57,8 +57,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		gsm.update();
 		gsm.draw();
 
-		// update inpute informations
-		GameInput.getInstance().update(Gdx.graphics.getDeltaTime());
+		GameInput.update(Gdx.graphics.getDeltaTime());
 
 		// FPSLogger
 		GameFPSLogger.log();

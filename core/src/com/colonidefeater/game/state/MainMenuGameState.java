@@ -52,15 +52,11 @@ public class MainMenuGameState extends GameStateAdapter {
 	@Override
 	public void handleInput() {
 
-		if (GameInput.getInstance().getEnterButton().isPressed()) {
+		if (GameInput.isPressed(GameInput.ENTER)) {
 			gsm.goToState(GameStateManager.STATE_LEVEL1);
 		}
 
-		if (GameInput.getInstance().getTouchButton().isTouched()) {
-			gsm.goToState(GameStateManager.STATE_LEVEL1);
-		}
-
-		if (GameInput.getInstance().getEscapeButton().isPressed()) {
+		if (GameInput.isPressed(GameInput.ESCAPE)) {
 			Gdx.app.exit();
 		}
 	}

@@ -97,7 +97,7 @@ public class Level1GameState extends GameStateAdapter {
 	@Override
 	public void handleInput() {
 		// Return to menu if escape is pressed
-		if (GameInput.getInstance().getEscapeButton().isPressed()) {
+		if (GameInput.isPressed(GameInput.ESCAPE)) {
 			gsm.setState(GameStateManager.STATE_MENU);
 		}
 	}
