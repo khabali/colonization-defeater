@@ -38,8 +38,13 @@ public class GameCamera extends OrthographicCamera {
 	}
 
 	public void setXPosition(float x) {
+		if (x < position.x) return; //camera don't go back
 		position.x = x;
 		fixXBounds();
+	}
+	
+	public float getXPosition() {
+		return position.x;
 	}
 
 	private void fixXBounds() {

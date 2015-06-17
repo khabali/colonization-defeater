@@ -55,14 +55,16 @@ public class EntityFactory {
 		final CircleShape shape = MapBodyBuilder.createEllipse(playerMapObject);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1.5f;
+		//fixtureDef.density = 1.5f;
 		fixtureDef.restitution = 0.4f;
 		body.createFixture(fixtureDef);
 		shape.dispose();
 
 		// -- create entity
-		return new EntityBuilder(world.ecsHub).with(new TextureCpt(AssetsManager.SOCCER_BALL, "soccerball"),
-				new PhysicsCpt(body), new PlayerControlled()).build();
+		return new EntityBuilder(world.ecsHub)
+		.with(new TextureCpt(AssetsManager.SOCCER_BALL, "soccerball"), new PhysicsCpt(body), new PlayerControlled())
+		.tag("PLAYER")
+		.build();
 	}
 
 }

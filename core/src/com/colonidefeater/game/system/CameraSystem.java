@@ -11,6 +11,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.handlers.GameCamera;
@@ -30,6 +31,7 @@ public class CameraSystem extends EntityProcessingSystem {
 
 	private ComponentMapper<PhysicsCpt> physicsCptMapper;
 
+	@SuppressWarnings("unchecked")
 	public CameraSystem(int xMax, int yMax) {
 		super(Aspect.getAspectForOne(PlayerControlled.class));
 		gameCamera = new GameCamera();
@@ -44,21 +46,8 @@ public class CameraSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void process(Entity e) {
-
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
-
-		// FIXME -- Debug to be deleted
-		if (GameInput.isHolded(GameInput.RIGHT)) {
-			playerPosition.x += 1.5f / PPM;
-			physicsCpt.body.applyForceToCenter(0, 2f, true);
-			physicsCpt.body.setTransform(playerPosition, 0);
-		}
-		if (GameInput.isPressed(GameInput.LEFT)) {
-			playerPosition.x -= 30.5f / PPM;
-			physicsCpt.body.applyForceToCenter(0, 50f, true);
-			physicsCpt.body.setTransform(playerPosition, 0);
-		}
 
 		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 8.0f);
 		gameCamera.update();
@@ -68,6 +57,12 @@ public class CameraSystem extends EntityProcessingSystem {
 			box2dCamera.setXPosition(playerPosition.x + box2dCamera.viewportWidth / 8.0f);
 			box2dCamera.update();
 		}
+	}
+	
+	public boolean isOutOfViewPort(float x) {
+		float camx0 = (gameCamera.position.x - (gameCamera.viewportWidth/2))/PPM;
+		float camx1 = (gameCamera.position.x + (gameCamera.viewportWidth/2))/PPM;
+		return (x <= camx0 || x >= camx1);
 	}
 
 }

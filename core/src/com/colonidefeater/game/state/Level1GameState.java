@@ -1,5 +1,6 @@
 package com.colonidefeater.game.state;
 
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -15,6 +16,7 @@ import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.system.Box2dDebugRenderSystem;
 import com.colonidefeater.game.system.CameraSystem;
 import com.colonidefeater.game.system.MapRenderSystem;
+import com.colonidefeater.game.system.PlayerControlSystem;
 import com.colonidefeater.game.system.SpriteRenderSystem;
 import com.colonidefeater.game.utils.Constants;
 
@@ -60,7 +62,9 @@ public class Level1GameState extends GameStateAdapter {
 		final Texture fixedBackground = AssetsManager.manager.get(AssetsManager.BG_SKY, Texture.class);
 
 		// --
+		world.setManager(new TagManager());
 		world.setSystem(new MapRenderSystem(tiledMap, fixedBackground, backgrounds));
+		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new SpriteRenderSystem());
 		world.setSystem(new Box2dDebugRenderSystem());
 		world.initialize();
