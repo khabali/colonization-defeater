@@ -70,7 +70,7 @@ public class Level1GameState extends GameStateAdapter {
 		world.initialize();
 
 		EntityFactory.createGround(world, tiledMap);
-		EntityFactory.createPlayer(world, tiledMap);
+		EntityFactory.createPlayer(world, tiledMap);	
 	}
 
 	/**

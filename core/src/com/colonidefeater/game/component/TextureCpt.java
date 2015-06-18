@@ -15,7 +15,7 @@ public class TextureCpt extends Component {
 	public TextureCpt(String id, String name) {
 		texture = AssetsManager.manager.get(id, TextureAtlas.class);
 		this.name = name;
-		createSprites("DEFAULT");
+		//createSprites("DEFAULT");
 	}
 
 	public void createSprites(String id) {

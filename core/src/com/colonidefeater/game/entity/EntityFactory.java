@@ -15,7 +15,10 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.colonidefeater.game.World;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
+import com.colonidefeater.game.component.StateCpt;
 import com.colonidefeater.game.component.TextureCpt;
+import com.colonidefeater.game.entity.state.IEntityState;
+import com.colonidefeater.game.entity.state.StandingState;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
 import com.colonidefeater.game.utils.MapBodyBuilder;
@@ -56,13 +59,16 @@ public class EntityFactory {
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		//fixtureDef.density = 1.5f;
-		fixtureDef.restitution = 0.4f;
+		//fixtureDef.restitution = 0.4f;
 		body.createFixture(fixtureDef);
 		shape.dispose();
 
 		// -- create entity
 		return new EntityBuilder(world.ecsHub)
-		.with(new TextureCpt(AssetsManager.SOCCER_BALL, "soccerball"), new PhysicsCpt(body), new PlayerControlled())
+		.with(new TextureCpt(AssetsManager.SOCCER_BALL, "soccerball"), 
+				new PhysicsCpt(body),
+				new StateCpt(IEntityState.standingState),
+				new PlayerControlled())
 		.tag("PLAYER")
 		.build();
 	}

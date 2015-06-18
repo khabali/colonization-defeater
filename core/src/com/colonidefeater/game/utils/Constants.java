@@ -30,5 +30,6 @@ public class Constants {
 	public static final int VELOCITY_ITERATIONS = 1;
 	public static final int POSITION_ITERATIONS = 1;
 	public static final float PPM = 100.0f; // Nombre de pixel par metre
+	public static final float playerMaxVel = 1f;
 
 }

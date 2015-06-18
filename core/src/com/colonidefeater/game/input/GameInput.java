@@ -10,7 +10,7 @@ public class GameInput {
 
 	private static final String tag = "GameInput";
 
-	private static final int NUM_KEYS = 4;
+	private static final int NUM_KEYS = 5;
 
 	private static boolean keyState[] = new boolean[NUM_KEYS];
 	private static boolean prevKeyState[] = new boolean[NUM_KEYS];
@@ -19,6 +19,7 @@ public class GameInput {
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
 	public static final int ESCAPE = 3;
+	public static final int UP = 4;
 
 	/**
 	 * update the game input state
@@ -45,6 +46,8 @@ public class GameInput {
 		case Keys.RIGHT:
 			keyState[RIGHT] = b;
 			break;
+		case Keys.UP:
+			keyState[UP] = b;
 		}
 	}
 

@@ -48,6 +48,13 @@ public class CameraSystem extends EntityProcessingSystem {
 	protected void process(Entity e) {
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
+		final Vector2 playerVelocity = physicsCpt.body.getLinearVelocity();
+		
+		if (isOutOfViewPort(playerPosition.x)) {
+			int pushbackvel = playerVelocity.x > 0 ? 1 : -1;
+			physicsCpt.body.setLinearVelocity(-(playerVelocity.x+pushbackvel), playerVelocity.y);
+			return;
+		}
 
 		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 8.0f);
 		gameCamera.update();
