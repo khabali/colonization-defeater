@@ -65,7 +65,7 @@ public class EntityFactory {
 
 		// -- create entity
 		return new EntityBuilder(world.ecsHub)
-		.with(new TextureCpt(AssetsManager.SOCCER_BALL, "soccerball"), 
+		.with(new TextureCpt(AssetsManager.STICK_MAN, "stickman"), 
 				new PhysicsCpt(body),
 				new StateCpt(IEntityState.standingState),
 				new PlayerControlled())

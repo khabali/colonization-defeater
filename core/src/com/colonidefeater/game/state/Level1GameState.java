@@ -79,7 +79,7 @@ public class Level1GameState extends GameStateAdapter {
 	private void loadRessources() {
 		AssetsManager.loadMap(AssetsManager.MAP_LVL_1);
 		AssetsManager.manager.load(AssetsManager.BG_SKY, Texture.class);
-		AssetsManager.manager.load(AssetsManager.SOCCER_BALL, TextureAtlas.class);
+		AssetsManager.manager.load(AssetsManager.STICK_MAN, TextureAtlas.class);
 
 		// Wait for ressource to load
 		while (!AssetsManager.manager.update()) {
@@ -110,7 +110,7 @@ public class Level1GameState extends GameStateAdapter {
 	public void dispose() {
 		super.dispose();
 		AssetsManager.manager.unload(AssetsManager.MAP_LVL_1);
-		AssetsManager.manager.unload(AssetsManager.SOCCER_BALL);
+		AssetsManager.manager.unload(AssetsManager.STICK_MAN);
 		AssetsManager.manager.unload(AssetsManager.BG_SKY);
 	}
 

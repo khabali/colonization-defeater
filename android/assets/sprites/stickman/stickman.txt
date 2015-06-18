@@ -1,0 +1,32 @@
+stickman.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Standing
+  rotate: false
+  xy: 2, 2
+  size: 36, 60
+  orig: 64, 64
+  offset: 14, 0
+  index: -1
+Walking
+  rotate: false
+  xy: 104, 2
+  size: 40, 56
+  orig: 64, 64
+  offset: 4, 6
+  index: 1
+Walking
+  rotate: false
+  xy: 40, 2
+  size: 36, 60
+  orig: 64, 64
+  offset: 8, 0
+  index: 2
+Walking
+  rotate: false
+  xy: 78, 2
+  size: 24, 60
+  orig: 64, 64
+  offset: 20, 0
+  index: 3

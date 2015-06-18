@@ -15,13 +15,14 @@ public class AssetsManager {
 	// MAIN MENU RESSOURCES
 	/** Menu background */
 	public static final String MENU_BG = "main_menu.png";
-	public static final String SOCCER_BALL = "sprites/soccerball.txt";
 
-	// Backgroundss
+	// Backgrounds
 	public static final String BG_SKY = "sky.png";
-
 	// MAPS
 	public static final String MAP_LVL_1 = "maps/map_lvl1.tmx";
+	// SPRITES
+	public static final String SOCCER_BALL = "sprites/soccerball.txt";
+	public static final String STICK_MAN = "sprites/stickman/stickman.txt";
 
 	public static void load() {
 		// Menu

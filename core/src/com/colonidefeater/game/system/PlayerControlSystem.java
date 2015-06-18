@@ -28,14 +28,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 		final StateCpt stateCpt = stateCptMapper.get(e);
 		
-		stateCpt.currentState = stateCpt.currentState.handleInput(physicsCpt.body);
-		stateCpt.currentState.update(physicsCpt.body);
-		
-		/*
-		if (GameInput.isPressed(GameInput.UP) && vel.y >= 0) {
-			physicsCpt.body.applyLinearImpulse(0, 4f, position.x, position.y, true);
-		}
-		*/
+		stateCpt.currentState = stateCpt.currentState.update(physicsCpt.body, stateCpt);
 	}
 
 }

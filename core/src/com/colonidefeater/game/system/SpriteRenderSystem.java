@@ -1,5 +1,7 @@
 package com.colonidefeater.game.system;
 
+import javax.management.RuntimeErrorException;
+
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -51,14 +53,20 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 		batch.setProjectionMatrix(cameraSystem.gameCamera.combined);
 		final TextureCpt texture = spriteMapper.get(e);
 		final PhysicsCpt physics = physicsMapper.get(e);
+		boolean doFlip = false;
 		if (stateMapper.has(e)) {
 			final StateCpt state = stateMapper.get(e);
 			texture.createSprites(state.currentState.name());
+			if (texture.spriteSet.size == 0) {
+				throw new RuntimeException(state.currentState.name() + " state is not supported!");
+			}
+			doFlip = state.isLeftSided;
 		}
 
 		frameTime += Gdx.graphics.getDeltaTime();
 		final Vector2 pos = physics.body.getPosition();
 		final TextureRegion sprite = new Animation(0.090f, texture.spriteSet).getKeyFrame(frameTime, true);
+		sprite.flip(doFlip, false);
 		batch.draw(sprite, (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2,
 				(pos.y * Constants.PPM) - sprite.getRegionHeight() / 2);
 	}

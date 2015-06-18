@@ -51,7 +51,7 @@ public class CameraSystem extends EntityProcessingSystem {
 		final Vector2 playerVelocity = physicsCpt.body.getLinearVelocity();
 		
 		if (isOutOfViewPort(playerPosition.x)) {
-			int pushbackvel = playerVelocity.x > 0 ? 1 : -1;
+			float pushbackvel = playerVelocity.x > 0 ? 0.5f : -0.5f;
 			physicsCpt.body.setLinearVelocity(-(playerVelocity.x+pushbackvel), playerVelocity.y);
 			return;
 		}
