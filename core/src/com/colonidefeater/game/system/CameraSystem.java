@@ -11,11 +11,10 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
+import com.colonidefeater.game.debug.GameLogger;
 import com.colonidefeater.game.handlers.GameCamera;
-import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.utils.Constants;
 
 @Wire
@@ -53,6 +52,7 @@ public class CameraSystem extends EntityProcessingSystem {
 		if (isOutOfViewPort(playerPosition.x)) {
 			float pushbackvel = playerVelocity.x > 0 ? 0.5f : -0.5f;
 			physicsCpt.body.setLinearVelocity(-(playerVelocity.x+pushbackvel), playerVelocity.y);
+			GameLogger.debug(tag, "is out of view");
 			return;
 		}
 
