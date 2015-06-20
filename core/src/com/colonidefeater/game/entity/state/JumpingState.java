@@ -21,7 +21,7 @@ public class JumpingState implements IEntityState {
 		IEntityState newState = handleInput(body, state);
 		final Vector2 vel = body.getLinearVelocity();
 		// TODO: better way to detect when I'im done jumping
-		if (vel.y == 0) newState = IEntityState.standingState;
+		if (vel.y > -0.01 && vel.y < 0.01) newState = IEntityState.standingState;
 		return newState;
 	}
 
