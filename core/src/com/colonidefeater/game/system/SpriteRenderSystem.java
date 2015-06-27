@@ -44,6 +44,7 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void begin() {
+		frameTime += Gdx.graphics.getDeltaTime();	
 		batch.setProjectionMatrix(cameraSystem.gameCamera.combined);
 		batch.begin();
 	}
@@ -64,7 +65,7 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 		}
 		
 		animationCpt.updateState(statename);
-		frameTime += Gdx.graphics.getDeltaTime();		
+			
 		final TextureRegion sprite = animationCpt.animation.getKeyFrame(frameTime, true);	
 		float xpos = (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2;
 		if (doFlip) xpos += sprite.getRegionWidth();
