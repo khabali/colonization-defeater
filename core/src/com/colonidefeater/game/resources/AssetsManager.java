@@ -23,6 +23,7 @@ public class AssetsManager {
 	// SPRITES
 	public static final String SOCCER_BALL = "sprites/soccerball.txt";
 	public static final String STICK_MAN = "sprites/stickman/stickman.txt";
+	public static final String FIRE = "sprites/fire/fire.txt";
 
 	public static void load() {
 		// Menu

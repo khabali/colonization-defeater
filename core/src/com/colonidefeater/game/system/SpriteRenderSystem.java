@@ -12,16 +12,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
+import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.StateCpt;
-import com.colonidefeater.game.component.TextureCpt;
 import com.colonidefeater.game.utils.Constants;
 
 @Wire
 public class SpriteRenderSystem extends EntityProcessingSystem {
 
 	private final String tag = getClass().getName();
-	private ComponentMapper<TextureCpt> spriteMapper;
+	private ComponentMapper<AnimationCpt> animationMapper;
 	private ComponentMapper<PhysicsCpt> physicsMapper;
 	private ComponentMapper<StateCpt> stateMapper;
 
@@ -31,8 +32,9 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 	private SpriteBatch batch;
 	private float frameTime = 0;
 
+	@SuppressWarnings("unchecked")
 	public SpriteRenderSystem() {
-		super(Aspect.getAspectForAll(TextureCpt.class));
+		super(Aspect.getAspectForAll(AnimationCpt.class, PhysicsCpt.class));
 	}
 
 	@Override
@@ -42,33 +44,33 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void begin() {
+		batch.setProjectionMatrix(cameraSystem.gameCamera.combined);
 		batch.begin();
 	}
 
 	@Override
 	// process only entities that have a sprite and a position
 	protected void process(Entity e) {
-
-		// set camera
-		batch.setProjectionMatrix(cameraSystem.gameCamera.combined);
-		final TextureCpt texture = spriteMapper.get(e);
+		final AnimationCpt animationCpt = animationMapper.get(e);
 		final PhysicsCpt physics = physicsMapper.get(e);
+		final Vector2 pos = physics.body.getPosition();
 		boolean doFlip = false;
+		
+		String statename = "Default";
 		if (stateMapper.has(e)) {
 			final StateCpt state = stateMapper.get(e);
-			texture.createSprites(state.currentState.name());
-			if (texture.spriteSet.size == 0) {
-				throw new RuntimeException(state.currentState.name() + " state is not supported!");
-			}
+			statename = state.currentState.name();
 			doFlip = state.isLeftSided;
 		}
-
-		frameTime += Gdx.graphics.getDeltaTime();
-		final Vector2 pos = physics.body.getPosition();
-		final TextureRegion sprite = new Animation(0.090f, texture.spriteSet).getKeyFrame(frameTime, true);
-		sprite.flip(doFlip, false);
-		batch.draw(sprite, (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2,
-				(pos.y * Constants.PPM) - sprite.getRegionHeight() / 2);
+		
+		animationCpt.updateState(statename);
+		frameTime += Gdx.graphics.getDeltaTime();		
+		final TextureRegion sprite = animationCpt.animation.getKeyFrame(frameTime, true);	
+		float xpos = (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2;
+		if (doFlip) xpos += sprite.getRegionWidth();
+		
+		batch.draw(sprite, xpos, (pos.y * Constants.PPM) - sprite.getRegionHeight() / 2,
+				doFlip ? -sprite.getRegionWidth() : sprite.getRegionWidth(), sprite.getRegionHeight());
 	}
 
 	@Override

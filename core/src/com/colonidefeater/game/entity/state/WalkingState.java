@@ -30,6 +30,9 @@ public class WalkingState implements IEntityState {
 			body.applyLinearImpulse(0, 4f, position.x, position.y, true);
 			return IEntityState.jumpingState;
 		}
+		if (GameInput.isPressed(GameInput.ENTER)) {
+			return IEntityState.walkfireState;
+		}
 		return this;
 	}
 

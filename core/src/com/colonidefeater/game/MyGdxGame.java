@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.colonidefeater.game.debug.GameFPSLogger;
@@ -18,6 +19,8 @@ import com.colonidefeater.game.utils.Constants;
 public class MyGdxGame extends ApplicationAdapter {
 
 	private final String tag = getClass().getName();
+	
+	public static World world = new World(new Vector2(0, -7f), true);
 
 	private GameStateManager gsm;
 	private InputHandler inputHandler;

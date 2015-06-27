@@ -17,23 +17,17 @@ public class StandingState implements IEntityState {
 	private IEntityState handleInput(Body body, StateCpt state) {
 		final Vector2 position = body.getPosition();
 		final Vector2 vel = body.getLinearVelocity();
-		if (GameInput.isHolded(GameInput.RIGHT)
-				&& vel.x < Constants.playerMaxVel) {
-			body.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
-			state.isLeftSided = false;
-			return IEntityState.walkingState;
-		}
-		if (GameInput.isHolded(GameInput.LEFT) 
-				&& vel.x > -Constants.playerMaxVel) {
-			body.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
-			state.isLeftSided = true;
+		if (GameInput.isHolded(GameInput.RIGHT) || GameInput.isHolded(GameInput.LEFT)) {
 			return IEntityState.walkingState;
 		}
 		if (GameInput.isPressed(GameInput.UP)) {
 			body.applyLinearImpulse(0, 4f, position.x, position.y, true);
 			return IEntityState.jumpingState;
 		}
-		return this;
+		if (GameInput.isHolded(GameInput.ENTER)) {
+			return IEntityState.standfireState;
+		}
+ 		return this;
 	}
 
 	@Override
