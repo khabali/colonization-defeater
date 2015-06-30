@@ -24,7 +24,7 @@ public class StandingFireState implements IEntityState {
 				return IEntityState.walkfireState;
 			}
 			if (GameInput.isPressed(GameInput.UP)) {
-				body.applyLinearImpulse(0, 4f, position.x, position.y, true);
+				JumpingState.doJump(body);
 				return IEntityState.jumpfirestate;
 			}
 		}else {

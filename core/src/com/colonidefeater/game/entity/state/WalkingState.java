@@ -27,7 +27,7 @@ public class WalkingState implements IEntityState {
 			state.isLeftSided = true;
 		}
 		if (GameInput.isPressed(GameInput.UP)) {
-			body.applyLinearImpulse(0, 4f, position.x, position.y, true);
+			JumpingState.doJump(body);
 			return IEntityState.jumpingState;
 		}
 		if (GameInput.isPressed(GameInput.ENTER)) {

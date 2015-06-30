@@ -2,6 +2,7 @@ package com.colonidefeater.game.entity.state;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.colonidefeater.game.MyGdxGame;
 import com.colonidefeater.game.component.StateCpt;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.system.CameraSystem;
@@ -21,7 +22,7 @@ public class StandingState implements IEntityState {
 			return IEntityState.walkingState;
 		}
 		if (GameInput.isPressed(GameInput.UP)) {
-			body.applyLinearImpulse(0, 4f, position.x, position.y, true);
+			JumpingState.doJump(body);
 			return IEntityState.jumpingState;
 		}
 		if (GameInput.isHolded(GameInput.ENTER)) {
