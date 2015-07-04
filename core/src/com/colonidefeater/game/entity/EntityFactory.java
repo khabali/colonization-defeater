@@ -1,5 +1,11 @@
 package com.colonidefeater.game.entity;
 
+import static com.colonidefeater.game.utils.Constants.MAP_LAYER_GROUND;
+import static com.colonidefeater.game.utils.Constants.MAP_LAYER_PLAYER;
+import static com.colonidefeater.game.utils.Constants.MAP_PROP_X;
+import static com.colonidefeater.game.utils.Constants.MAP_PROP_Y;
+import static com.colonidefeater.game.utils.Constants.PPM;
+
 import java.util.Iterator;
 
 import com.artemis.Entity;
@@ -16,15 +22,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.colonidefeater.game.World;
+import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.BulletCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
+import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateCpt;
-import com.colonidefeater.game.entity.state.IEntityState;
 import com.colonidefeater.game.entity.state.StandingState;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
@@ -32,36 +37,34 @@ import com.colonidefeater.game.utils.MapBodyBuilder;
 
 public class EntityFactory {
 
-	public static final Entity createGround(World world, TiledMap map) {
+	public static final Entity createGround(com.artemis.World ecsHub,
+			World physicsHub, TiledMap map) {
 
-		final MapLayer groundMapLayer = map.getLayers().get(
-				Constants.MAP_LAYER_GROUND);
+		final MapLayer groundMapLayer = map.getLayers().get(MAP_LAYER_GROUND);
 		final MapObjects mapObjects = groundMapLayer.getObjects();
 
 		// -- create player box2d shape
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-		final Body body = world.createBody(bodyDef);
-		
+		final Body body = physicsHub.createBody(bodyDef);
+
 		for (Iterator<MapObject> mapObjectIt = mapObjects.iterator(); mapObjectIt
 				.hasNext();) {
 			PolylineMapObject ground = (PolylineMapObject) mapObjectIt.next();
-				final Shape shape = MapBodyBuilder.createPolyline(ground);
+			final Shape shape = MapBodyBuilder.createPolyline(ground);
 			final FixtureDef fixtureDef = new FixtureDef();
 			fixtureDef.shape = shape;
-			fixtureDef.friction = 0.3f;
 			body.createFixture(fixtureDef);
 			shape.dispose();
 		}
 
-		return new EntityBuilder(world.ecsHub).with(new PhysicsCpt(body))
-				.build();
+		return new EntityBuilder(ecsHub).with(new PhysicsCpt(body)).build();
 	}
 
-	public static Entity createPlayer(World world, TiledMap map) {
+	public static Entity createPlayer(com.artemis.World ecsHub,
+			World physicsHub, TiledMap map) {
 
-		final MapLayer playerMapLayer = map.getLayers().get(
-				Constants.MAP_LAYER_PLAYER);
+		final MapLayer playerMapLayer = map.getLayers().get(MAP_LAYER_PLAYER);
 		final EllipseMapObject playerMapObject = (EllipseMapObject) playerMapLayer
 				.getObjects().get(0);
 
@@ -69,53 +72,54 @@ public class EntityFactory {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.x = (Float) playerMapObject.getProperties().get(
-				Constants.MAP_PROPERTIE_X)
-				/ Constants.PPM;
+				MAP_PROP_X)
+				/ PPM;
 		bodyDef.position.y = (Float) playerMapObject.getProperties().get(
-				Constants.MAP_PROPERTIE_Y)
-				/ Constants.PPM;
-		final Body body = world.createBody(bodyDef);
+				MAP_PROP_Y)
+				/ PPM;
+		final Body body = physicsHub.createBody(bodyDef);
 		final CircleShape shape = MapBodyBuilder.createEllipse(playerMapObject);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		//fixtureDef.density = 1000f;
+		// fixtureDef.density = 1.5f;
 		// fixtureDef.restitution = 0.4f;
 		body.createFixture(fixtureDef);
 		shape.dispose();
 
 		// -- create entity
-		return new EntityBuilder(world.ecsHub)
+		return new EntityBuilder(ecsHub)
 				.with(new AnimationCpt(AssetsManager.STICK_MAN, "stickman"),
 						new PhysicsCpt(body),
-						new StateCpt(IEntityState.standingState),
-						new PlayerControlled()).tag("PLAYER").build();
+						new StateCpt(new StandingState()),
+						new PlayerWeaponCpt(), new PlayerControlled())
+				.tag("PLAYER").build();
 	}
-	
+
 	// set <to> to null to make it move screen wide
-	public static Entity createBullet(World world, Vector2 from, boolean goLeft) {
-		//adjust position
-		from.y += 0.1;
+	public static Entity createBullet(Entity owner, float dammage) {
+
+		StateCpt stateCpt = owner.getComponent(StateCpt.class);
+		PhysicsCpt physicCpt = owner.getComponent(PhysicsCpt.class);
+		Vector2 from = physicCpt.body.getPosition();
+		boolean goLeft = stateCpt.isLeftSided;
+		from.y += 0.05;
 		from.x += goLeft ? -0.5f : 0.5f;
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.bullet = true;
 		bodyDef.position.set(from);
-		final Body body = world.createBody(bodyDef);
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(25/Constants.PPM, 24/Constants.PPM);
+		final Body body = physicCpt.body.getWorld().createBody(bodyDef);
+		Shape shape = new CircleShape();
+		shape.setRadius(10 / Constants.PPM);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		//fixtureDef.density = 1000f;
-		//fixtureDef.restitution = 1.0f;
-		//fixtureDef.friction = 0.0f;
 		fixtureDef.isSensor = true;
 		body.createFixture(fixtureDef);
 		shape.dispose();
 
-		return new EntityBuilder(world.ecsHub)
-				.with(new AnimationCpt(AssetsManager.FIRE, "fire"),
-						new PhysicsCpt(body),
-						new BulletCpt(from, goLeft))
+		return new EntityBuilder(owner.getWorld()).with(
+				new AnimationCpt(AssetsManager.FIRE, "fire"),
+				new PhysicsCpt(body), new BulletCpt(from, dammage, goLeft))
 				.build();
 	}
 

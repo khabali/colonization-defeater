@@ -1,12 +1,8 @@
 package com.colonidefeater.game.entity.state;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.colonidefeater.game.MyGdxGame;
-import com.colonidefeater.game.component.StateCpt;
+import com.artemis.Entity;
+import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.input.GameInput;
-import com.colonidefeater.game.system.CameraSystem;
-import com.colonidefeater.game.utils.Constants;
 
 public class StandingState implements IEntityState {
 
@@ -15,25 +11,25 @@ public class StandingState implements IEntityState {
 		return "Standing";
 	}
 
-	private IEntityState handleInput(Body body, StateCpt state) {
-		final Vector2 position = body.getPosition();
-		final Vector2 vel = body.getLinearVelocity();
-		if (GameInput.isHolded(GameInput.RIGHT) || GameInput.isHolded(GameInput.LEFT)) {
+	private IEntityState handleInput(Entity e) {
+		PhysicsCpt physic = e.getComponent(PhysicsCpt.class);
+		if (GameInput.isHolded(GameInput.RIGHT)
+				|| GameInput.isHolded(GameInput.LEFT)) {
 			return IEntityState.walkingState;
 		}
-		if (GameInput.isPressed(GameInput.UP)) {
-			JumpingState.doJump(body);
+		if (GameInput.isPressed(GameInput.JUMP)) {
+			JumpingState.doJump(physic.body);
 			return IEntityState.jumpingState;
 		}
-		if (GameInput.isHolded(GameInput.ENTER)) {
+		if (GameInput.isHolded(GameInput.FIRE)) {
 			return IEntityState.standfireState;
 		}
- 		return this;
+		return this;
 	}
 
 	@Override
-	public IEntityState update(Body body, StateCpt state) {
-		return handleInput(body, state);	
+	public IEntityState update(Entity e) {
+		return handleInput(e);
 	}
 
 }

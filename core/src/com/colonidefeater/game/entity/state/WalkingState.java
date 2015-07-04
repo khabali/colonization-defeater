@@ -1,7 +1,8 @@
 package com.colonidefeater.game.entity.state;
 
+import com.artemis.Entity;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.StateCpt;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.utils.Constants;
@@ -13,34 +14,41 @@ public class WalkingState implements IEntityState {
 		return "Walking";
 	}
 
-	private IEntityState handleInput(Body body, StateCpt state) {
-		final Vector2 position = body.getPosition();
-		final Vector2 vel = body.getLinearVelocity();
+	private IEntityState handleInput(Entity e) {
+		PhysicsCpt physic = e.getComponent(PhysicsCpt.class);
+		StateCpt state = e.getComponent(StateCpt.class);
+
+		final Vector2 position = physic.body.getPosition();
+		final Vector2 vel = physic.body.getLinearVelocity();
 		if (GameInput.isHolded(GameInput.RIGHT)
 				&& vel.x < Constants.playerMaxVel) {
-			body.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
+			physic.body.applyLinearImpulse(0.1f, 0, position.x, position.y,
+					true);
 			state.isLeftSided = false;
 		}
-		if (GameInput.isHolded(GameInput.LEFT) 
+		if (GameInput.isHolded(GameInput.LEFT)
 				&& vel.x > -Constants.playerMaxVel) {
-			body.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
+			physic.body.applyLinearImpulse(-0.1f, 0, position.x, position.y,
+					true);
 			state.isLeftSided = true;
 		}
-		if (GameInput.isPressed(GameInput.UP)) {
-			JumpingState.doJump(body);
+		if (GameInput.isPressed(GameInput.JUMP)) {
+			JumpingState.doJump(physic.body);
 			return IEntityState.jumpingState;
 		}
-		if (GameInput.isPressed(GameInput.ENTER)) {
+		if (GameInput.isPressed(GameInput.FIRE)) {
 			return IEntityState.walkfireState;
 		}
 		return this;
 	}
 
 	@Override
-	public IEntityState update(Body body, StateCpt state) {
-		IEntityState newState = handleInput(body, state);
-		final Vector2 vel = body.getLinearVelocity();
-		if (Math.abs(vel.x) <= 0.1) newState = IEntityState.standingState;
+	public IEntityState update(Entity e) {
+		PhysicsCpt physic = e.getComponent(PhysicsCpt.class);
+		IEntityState newState = handleInput(e);
+		final Vector2 vel = physic.body.getLinearVelocity();
+		if (Math.abs(vel.x) <= 0.1)
+			newState = IEntityState.standingState;
 		return newState;
 	}
 

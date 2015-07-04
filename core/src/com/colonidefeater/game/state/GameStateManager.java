@@ -21,7 +21,7 @@ public class GameStateManager {
 		this.viewPort = viewPort;
 
 		states = new Stack<GameState>();
-		currentGameState = STATE_MENU;
+		currentGameState = STATE_LEVEL1;
 		loadState(currentGameState);
 	}
 

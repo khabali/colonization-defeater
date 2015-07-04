@@ -1,8 +1,6 @@
 package com.colonidefeater.game.entity.state;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.colonidefeater.game.component.StateCpt;
-import com.colonidefeater.game.system.CameraSystem;
+import com.artemis.Entity;
 
 public interface IEntityState {
 	public static StandingState standingState = new StandingState();
@@ -13,6 +11,6 @@ public interface IEntityState {
 	public static JumpingFireState jumpfirestate = new JumpingFireState();
 	
 	public String name();	
-	public IEntityState update(Body body, StateCpt state);
+	public IEntityState update(Entity e);
 
 }

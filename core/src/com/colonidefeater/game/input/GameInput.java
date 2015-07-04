@@ -12,14 +12,19 @@ public class GameInput {
 
 	private static final int NUM_KEYS = 5;
 
+	// keys for desktop
 	private static boolean keyState[] = new boolean[NUM_KEYS];
 	private static boolean prevKeyState[] = new boolean[NUM_KEYS];
 
-	public static final int ENTER = 0;
-	public static final int LEFT = 1;
-	public static final int RIGHT = 2;
-	public static final int ESCAPE = 3;
-	public static final int UP = 4;
+	// virtual keys for android
+	private static boolean v_keyState[] = new boolean[NUM_KEYS];
+	private static boolean v_prevKeyState[] = new boolean[NUM_KEYS];
+
+	public static final int LEFT = 0;
+	public static final int RIGHT = 1;
+	public static final int JUMP = 2;
+	public static final int FIRE = 3;
+	public static final int ESCAPE = 4;
 
 	/**
 	 * update the game input state
@@ -34,29 +39,47 @@ public class GameInput {
 
 	public static void setKeyState(int keyCode, boolean b) {
 		switch (keyCode) {
-		case Keys.ENTER:
-			keyState[ENTER] = b;
-			break;
-		case Keys.ESCAPE:
-			keyState[ESCAPE] = b;
-			break;
 		case Keys.LEFT:
 			keyState[LEFT] = b;
 			break;
 		case Keys.RIGHT:
 			keyState[RIGHT] = b;
 			break;
-		case Keys.UP:
-			keyState[UP] = b;
+		case Keys.Z:
+			keyState[JUMP] = b;
+			break;
+		case Keys.A:
+			keyState[FIRE] = b;
+			break;
+		case Keys.ESCAPE:
+			keyState[ESCAPE] = b;
+			break;
+		}
+	}
+
+	public static void setVKeyState(int keyCode, boolean b) {
+		switch (keyCode) {
+		case LEFT:
+			v_keyState[LEFT] = b;
+			break;
+		case RIGHT:
+			v_keyState[RIGHT] = b;
+			break;
+		case JUMP:
+			v_keyState[JUMP] = b;
+		case FIRE:
+			v_keyState[FIRE] = b;
+			break;
 		}
 	}
 
 	public static boolean isPressed(int keyCode) {
-		return keyState[keyCode] && !prevKeyState[keyCode];
+		return (keyState[keyCode] && !prevKeyState[keyCode])
+				|| (v_keyState[keyCode] && !v_prevKeyState[keyCode]);
 	}
 
 	public static final boolean isHolded(int keyCode) {
-		return keyState[keyCode];
+		return keyState[keyCode] || v_keyState[keyCode];
 	}
 
 }

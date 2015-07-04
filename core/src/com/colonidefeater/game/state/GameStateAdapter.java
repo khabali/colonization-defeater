@@ -1,13 +1,33 @@
 package com.colonidefeater.game.state;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.debug.GameLogger;
+import com.colonidefeater.game.utils.Constants;
 
 public abstract class GameStateAdapter extends GameState {
 
 	protected String tag = getClass().getName();
+	
+	protected com.artemis.World ecsHub;
+	protected World physicsHub;
 
 	public GameStateAdapter(GameStateManager gsm) {
 		super(gsm);
+		ecsHub = new com.artemis.World();
+		physicsHub = new World(new Vector2(0, -9f), true);
+		init();
+	}
+	
+	@Override
+	public void update() {
+		handleInput();
+	}
+	
+	@Override
+	public void draw() {
+		ecsHub.process();
+		physicsHub.step(Constants.TIME_STEP, Constants.VELOCITY_ITERATIONS, Constants.POSITION_ITERATIONS);	
 	}
 
 	@Override

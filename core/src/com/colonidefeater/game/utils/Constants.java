@@ -19,8 +19,10 @@ public class Constants {
 	public static final String MAP_LAYER_BG_2 = "bg_2";
 	public static final String MAP_LAYER_BG_3 = "bg_3";
 
-	public static final String MAP_PROPERTIE_X = "x";
-	public static final String MAP_PROPERTIE_Y = "y";
+	public static final String MAP_PROP_WIDTH = "width";
+	public static final String MAP_PROP_HEIGHT = "height";
+	public static final String MAP_PROP_X = "x";
+	public static final String MAP_PROP_Y = "y";
 
 	// ###################
 	// BOX2D

@@ -5,8 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.badlogic.gdx.math.Vector2;
-import com.colonidefeater.game.MyGdxGame;
+import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.BulletCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 
@@ -16,10 +15,12 @@ public class BulletSystem extends EntityProcessingSystem {
 	private ComponentMapper<PhysicsCpt> physicsCptMapper;
 	
 	private CameraSystem camera;
+	private World physicsHub;
 
 	@SuppressWarnings("unchecked")
-	public BulletSystem() {
+	public BulletSystem(World physicsHub) {
 		super(Aspect.getAspectForOne(BulletCpt.class));
+		this.physicsHub = physicsHub;
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class BulletSystem extends EntityProcessingSystem {
 		
 		// bullet will be removed when out of screen or TODO++collides with smthg++
 		if (camera.isOutOfViewPort(physicsCpt.body.getPosition().x)) {
-			MyGdxGame.world.physicsHub.destroyBody(physicsCpt.body);
+			physicsHub.destroyBody(physicsCpt.body);
 			e.deleteFromWorld();
 		}
 	}

@@ -52,7 +52,7 @@ public class MainMenuGameState extends GameStateAdapter {
 	@Override
 	public void handleInput() {
 
-		if (GameInput.isPressed(GameInput.ENTER)) {
+		if (GameInput.isPressed(GameInput.FIRE)) {
 			gsm.goToState(GameStateManager.STATE_LEVEL1);
 		}
 

@@ -14,7 +14,8 @@ public abstract class GameState {
 	public abstract void init();
 
 	/**
-	 * Cette methode permet de mettre à jour les données traitées par cet etat
+	 * Cette methode permet de mettre à jour les données traitées par cet
+	 * etat
 	 */
 	public abstract void update();
 
