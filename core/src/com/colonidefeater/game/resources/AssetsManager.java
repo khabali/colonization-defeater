@@ -23,6 +23,9 @@ public class AssetsManager {
 	public static final String BUTTON_FIRE = "virtualpad/fire_button.png";
 	public static final String BUTTON_JUMP = "virtualpad/jump_button.png";
 
+	// -- Weapons powers
+	public static final String WP_H = "weapon_powers/h_weapon.png";
+
 	// -- Backgrounds
 	public static final String BG_SKY = "sky.png";
 
@@ -37,6 +40,9 @@ public class AssetsManager {
 	public static void load() {
 		// Menu
 		manager.load(MENU_BG, Texture.class);
+
+		// -- weapon powers
+		manager.load(WP_H, Texture.class);
 
 		// Virtual game pad
 		manager.load(BUTTON_LEFT, Texture.class);

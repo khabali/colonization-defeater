@@ -65,13 +65,12 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 		final TextureRegion sprite = animationCpt.animation.getKeyFrame(
 				frameTime, true);
 		float xpos = (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2;
+		float ypos = (pos.y * Constants.PPM) - sprite.getRegionHeight() / 2;
 		if (doFlip)
 			xpos += sprite.getRegionWidth();
 
-		batch.draw(sprite, xpos,
-				(pos.y * Constants.PPM) - sprite.getRegionHeight() / 2,
-				doFlip ? -sprite.getRegionWidth() : sprite.getRegionWidth(),
-				sprite.getRegionHeight());
+		batch.draw(sprite, xpos, ypos, doFlip ? -sprite.getRegionWidth()
+				: sprite.getRegionWidth(), sprite.getRegionHeight());
 	}
 
 	@Override

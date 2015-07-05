@@ -2,6 +2,10 @@ package com.colonidefeater.game.entity;
 
 import static com.colonidefeater.game.utils.Constants.MAP_LAYER_GROUND;
 import static com.colonidefeater.game.utils.Constants.MAP_LAYER_PLAYER;
+import static com.colonidefeater.game.utils.Constants.MAP_LAYER_WEAPONS;
+import static com.colonidefeater.game.utils.Constants.MAP_PROP_HEIGHT;
+import static com.colonidefeater.game.utils.Constants.MAP_PROP_TYPE;
+import static com.colonidefeater.game.utils.Constants.MAP_PROP_WIDTH;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_X;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_Y;
 import static com.colonidefeater.game.utils.Constants.PPM;
@@ -22,6 +26,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.AnimationCpt;
@@ -30,11 +35,13 @@ import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
+import com.colonidefeater.game.component.TextureCpt;
 import com.colonidefeater.game.entity.state.PlayerState;
 import com.colonidefeater.game.fsm.StateMachine;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
 import com.colonidefeater.game.utils.MapBodyBuilder;
+import com.colonidefeater.game.weapon.GameWeapons;
 
 public class EntityFactory {
 
@@ -91,9 +98,10 @@ public class EntityFactory {
 		Entity e = new EntityBuilder(ecsHub)
 				.with(new AnimationCpt(AssetsManager.STICK_MAN, "stickman"),
 						new PhysicsCpt(body),
-						new PlayerWeaponCpt(), new PlayerControlled())
-				.tag("PLAYER").build();
-		StateMachineCpt stateMachine = new StateMachineCpt(new StateMachine<Entity>(e));
+						new PlayerWeaponCpt(new GameWeapons.SimpleGun()),
+						new PlayerControlled()).tag("PLAYER").build();
+		StateMachineCpt stateMachine = new StateMachineCpt(
+				new StateMachine<Entity>(e));
 		e.edit().add(stateMachine);
 		stateMachine.stateMachine.setInitialState(PlayerState.STAND);
 		return e;
@@ -123,8 +131,45 @@ public class EntityFactory {
 
 		return new EntityBuilder(owner.getWorld()).with(
 				new AnimationCpt(AssetsManager.FIRE, "fire"),
-				new PhysicsCpt(body), new BulletCpt(from, goLeft))
-				.build();
+				new PhysicsCpt(body), new BulletCpt(from, goLeft)).build();
+	}
+
+	/**
+	 * Create weapon powers on map
+	 * 
+	 * @param ecsHub
+	 * @param physicsHub
+	 * @param map
+	 * @return
+	 */
+	public static void createWeaponsPowers(com.artemis.World ecsHub,
+			World physicsHub, TiledMap map) {
+
+		final MapLayer wpsLayer = map.getLayers().get(MAP_LAYER_WEAPONS);
+		for (MapObject power : wpsLayer.getObjects()) {
+			float x = (Float) power.getProperties().get(MAP_PROP_X);
+			float y = (Float) power.getProperties().get(MAP_PROP_Y);
+			float width = (Float) power.getProperties().get(MAP_PROP_WIDTH);
+			float height = (Float) power.getProperties().get(MAP_PROP_HEIGHT);
+			String type = (String) power.getProperties().get(MAP_PROP_TYPE);
+
+			final BodyDef bodyDef = new BodyDef();
+			bodyDef.type = BodyType.DynamicBody;
+			bodyDef.position.set(x / PPM, y / PPM);
+			final Body body = physicsHub.createBody(bodyDef);
+			PolygonShape shape = new PolygonShape();
+			shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
+			final FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = shape;
+			fixtureDef.density = 1f;
+			fixtureDef.restitution = 0.2f;
+			body.createFixture(fixtureDef);
+			body.setUserData(type);
+			shape.dispose();
+
+			new EntityBuilder(ecsHub).with(new PhysicsCpt(body),
+					new TextureCpt(AssetsManager.WP_H)).build();
+		}
 	}
 
 }

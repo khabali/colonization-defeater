@@ -1,16 +1,35 @@
 package com.colonidefeater.game.weapon;
 
 import com.artemis.Entity;
+import com.colonidefeater.game.debug.GameLogger;
+import com.colonidefeater.game.entity.EntityFactory;
 
 public abstract class Weapon {
+	
+	private String tag = getClass().getName();
+	protected int ammo = 200;
+	protected float dammage = 1f;
+	protected float delay = 0.1f * 1000f;
+	protected long lastFireTime = 0l;
 
-	public int ammo = 200;
-	public float dammage = 1;
-
-		/**
+	/**
 	 * this methode make the weapon fire
 	 */
-	public abstract void fire(Entity e);
+	public void fire(Entity e) {
+		// test if is a finit ammo weapon
+		// if no ammo juste return without firing
+		if (isFiniteAmmo() && getAmmoAmount() == 0) {
+			GameLogger.debug(tag, "No ammo in this weapon");
+			return;
+		}
+
+		// decrease ammo stock
+		if (isFiniteAmmo()) {
+			ammo--;
+		}
+
+		EntityFactory.createBullet(e, dammage);
+	}
 
 	/**
 	 * this methode return the dammage of this weapon

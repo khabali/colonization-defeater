@@ -20,6 +20,7 @@ import com.colonidefeater.game.system.CameraSystem;
 import com.colonidefeater.game.system.MapRenderSystem;
 import com.colonidefeater.game.system.PlayerControlSystem;
 import com.colonidefeater.game.system.SpriteRenderSystem;
+import com.colonidefeater.game.system.TextureRenderSystem;
 
 public class Level1GameState extends GameStateAdapter {
 
@@ -32,19 +33,19 @@ public class Level1GameState extends GameStateAdapter {
 
 		loadRessources();
 
-		final TiledMap tiledMap = AssetsManager.manager.get(
-				AssetsManager.MAP_LVL_1, TiledMap.class);
+		final TiledMap tiledMap = AssetsManager.manager
+				.get(AssetsManager.MAP_LVL_1);
 
 		// -- Camera system
-		final int width = (Integer) tiledMap.getProperties().get(MAP_PROP_WIDTH);
-		final int height = (Integer) tiledMap.getProperties().get(MAP_PROP_HEIGHT);
-		
+		final int width = (Integer) tiledMap.getProperties()
+				.get(MAP_PROP_WIDTH);
+		final int height = (Integer) tiledMap.getProperties().get(
+				MAP_PROP_HEIGHT);
 
 		final int tileWidth = (Integer) tiledMap.getProperties().get(
 				"tilewidth");
 		final int tileHeight = (Integer) tiledMap.getProperties().get(
 				"tileheight");
-		
 
 		final int xMax = width * tileWidth;
 		final int yMax = height * tileHeight;
@@ -59,8 +60,8 @@ public class Level1GameState extends GameStateAdapter {
 		final ParallaxeBackground[] backgrounds = new ParallaxeBackground[2];
 		backgrounds[0] = new ParallaxeBackground(clouds, 0.1f);
 		backgrounds[1] = new ParallaxeBackground(mountains, 0.2f);
-		final Texture fixedBackground = AssetsManager.manager.get(
-				AssetsManager.BG_SKY);
+		final Texture fixedBackground = AssetsManager.manager
+				.get(AssetsManager.BG_SKY);
 
 		// --
 		ecsHub.setManager(new TagManager());
@@ -69,17 +70,22 @@ public class Level1GameState extends GameStateAdapter {
 		ecsHub.setSystem(new PlayerControlSystem());
 		ecsHub.setSystem(new BulletSystem(physicsHub));
 		ecsHub.setSystem(new SpriteRenderSystem());
+		ecsHub.setSystem(new TextureRenderSystem());
 		ecsHub.setSystem(new Box2dDebugRenderSystem());
 		ecsHub.initialize();
 
-		EntityFactory.createGround(ecsHub,physicsHub, tiledMap);
-		EntityFactory.createPlayer(ecsHub,physicsHub, tiledMap);
+		EntityFactory.createGround(ecsHub, physicsHub, tiledMap);
+		EntityFactory.createPlayer(ecsHub, physicsHub, tiledMap);
+		EntityFactory.createWeaponsPowers(ecsHub, physicsHub, tiledMap);
 	}
 
 	/**
 	 * Load level ressources
 	 */
 	private void loadRessources() {
+		// TODO call this in charge game screen
+		AssetsManager.load();
+
 		AssetsManager.loadMap(AssetsManager.MAP_LVL_1);
 		AssetsManager.manager.load(AssetsManager.BG_SKY, Texture.class);
 		AssetsManager.manager.load(AssetsManager.STICK_MAN, TextureAtlas.class);
@@ -88,9 +94,7 @@ public class Level1GameState extends GameStateAdapter {
 		// Wait for ressource to load
 		while (!AssetsManager.manager.update()) {
 		}
-
 	}
-
 
 	@Override
 	public void handleInput() {

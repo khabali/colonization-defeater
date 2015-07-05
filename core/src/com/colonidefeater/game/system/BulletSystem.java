@@ -13,7 +13,7 @@ import com.colonidefeater.game.component.PhysicsCpt;
 public class BulletSystem extends EntityProcessingSystem {
 	private ComponentMapper<BulletCpt> bulletCptMapper;
 	private ComponentMapper<PhysicsCpt> physicsCptMapper;
-	
+
 	private CameraSystem camera;
 	private World physicsHub;
 
@@ -28,13 +28,13 @@ public class BulletSystem extends EntityProcessingSystem {
 		final BulletCpt bulletCpt = bulletCptMapper.get(e);
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 
+		physicsCpt.body.setLinearVelocity(20, 0);
 		if (bulletCpt.isLeftSided) {
 			physicsCpt.body.setLinearVelocity(-20, 0);
-		}else {
-			physicsCpt.body.setLinearVelocity(20, 0);
 		}
-		
-		// bullet will be removed when out of screen or TODO++collides with smthg++
+
+		// bullet will be removed when out of screen or TODO++collides with
+		// smthg++
 		if (camera.isOutOfViewPort(physicsCpt.body.getPosition().x)) {
 			physicsHub.destroyBody(physicsCpt.body);
 			e.deleteFromWorld();
