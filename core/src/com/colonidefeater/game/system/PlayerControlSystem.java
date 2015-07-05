@@ -6,12 +6,12 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.colonidefeater.game.component.PlayerControlled;
-import com.colonidefeater.game.component.StateCpt;
+import com.colonidefeater.game.component.StateMachineCpt;
 
 @Wire
 public class PlayerControlSystem extends EntityProcessingSystem {
 
-	private ComponentMapper<StateCpt> stateCptMapper;
+	private ComponentMapper<StateMachineCpt> stateMachineCptMapper;
 
 	@SuppressWarnings("unchecked")
 	public PlayerControlSystem() {
@@ -20,8 +20,8 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void process(Entity e) {
-		final StateCpt stateCpt = stateCptMapper.get(e);
-		stateCpt.currentState = stateCpt.currentState.update(e);
+		final StateMachineCpt stateCpt = stateMachineCptMapper.get(e);
+		stateCpt.stateMachine.update();
 	}
 
 }

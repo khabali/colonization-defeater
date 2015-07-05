@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
-import com.colonidefeater.game.component.StateCpt;
+import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.utils.Constants;
 
 @Wire
@@ -20,7 +20,7 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 	private final String tag = getClass().getName();
 	private ComponentMapper<AnimationCpt> animationMapper;
 	private ComponentMapper<PhysicsCpt> physicsMapper;
-	private ComponentMapper<StateCpt> stateMapper;
+	private ComponentMapper<StateMachineCpt> stateMapper;
 
 	// auto wired
 	private CameraSystem cameraSystem;
@@ -55,8 +55,8 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 
 		String statename = "Default";
 		if (stateMapper.has(e)) {
-			final StateCpt state = stateMapper.get(e);
-			statename = state.currentState.name();
+			final StateMachineCpt state = stateMapper.get(e);
+			statename = state.stateMachine.getCurrentState().toString();
 			doFlip = state.isLeftSided;
 		}
 

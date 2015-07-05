@@ -29,8 +29,9 @@ import com.colonidefeater.game.component.BulletCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.PlayerWeaponCpt;
-import com.colonidefeater.game.component.StateCpt;
-import com.colonidefeater.game.entity.state.StandingState;
+import com.colonidefeater.game.component.StateMachineCpt;
+import com.colonidefeater.game.entity.state.PlayerState;
+import com.colonidefeater.game.fsm.StateMachine;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
 import com.colonidefeater.game.utils.MapBodyBuilder;
@@ -87,18 +88,21 @@ public class EntityFactory {
 		shape.dispose();
 
 		// -- create entity
-		return new EntityBuilder(ecsHub)
+		Entity e = new EntityBuilder(ecsHub)
 				.with(new AnimationCpt(AssetsManager.STICK_MAN, "stickman"),
 						new PhysicsCpt(body),
-						new StateCpt(new StandingState()),
 						new PlayerWeaponCpt(), new PlayerControlled())
 				.tag("PLAYER").build();
+		StateMachineCpt stateMachine = new StateMachineCpt(new StateMachine<Entity>(e));
+		e.edit().add(stateMachine);
+		stateMachine.stateMachine.setInitialState(PlayerState.STAND);
+		return e;
 	}
 
 	// set <to> to null to make it move screen wide
 	public static Entity createBullet(Entity owner, float dammage) {
 
-		StateCpt stateCpt = owner.getComponent(StateCpt.class);
+		StateMachineCpt stateCpt = owner.getComponent(StateMachineCpt.class);
 		PhysicsCpt physicCpt = owner.getComponent(PhysicsCpt.class);
 		Vector2 from = physicCpt.body.getPosition();
 		boolean goLeft = stateCpt.isLeftSided;
@@ -119,7 +123,7 @@ public class EntityFactory {
 
 		return new EntityBuilder(owner.getWorld()).with(
 				new AnimationCpt(AssetsManager.FIRE, "fire"),
-				new PhysicsCpt(body), new BulletCpt(from, dammage, goLeft))
+				new PhysicsCpt(body), new BulletCpt(from, goLeft))
 				.build();
 	}
 

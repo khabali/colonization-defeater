@@ -2,56 +2,70 @@ stickman.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Standing
+STAND
   rotate: false
   xy: 2, 2
   size: 42, 60
   orig: 64, 64
   offset: 14, 0
   index: -1
-StandingFire
+JUMP
+  rotate: false
+  xy: 2, 2
+  size: 42, 60
+  orig: 64, 64
+  offset: 14, 0
+  index: -1
+STAND_AND_FIRE
   rotate: false
   xy: 46, 2
   size: 50, 60
   orig: 64, 64
   offset: 14, 0
   index: -1
-WalkingFire
+JUMP_AND_FIRE
+  rotate: false
+  xy: 46, 2
+  size: 50, 60
+  orig: 64, 64
+  offset: 14, 0
+  index: -1
+WALK_AND_FIRE
   rotate: false
   xy: 98, 2
   size: 57, 56
   orig: 64, 64
   offset: 4, 6
   index: 1
-WalkingFire
+WALK_AND_FIRE
   rotate: false
   xy: 157, 2
   size: 53, 60
   orig: 64, 64
   offset: 8, 0
   index: 2
-WalkingFire
+WALK_AND_FIRE
   rotate: false
   xy: 212, 2
   size: 40, 60
   orig: 64, 64
   offset: 20, 0
   index: 3
-Walking
+WALK
   rotate: false
   xy: 254, 2
   size: 48, 56
   orig: 64, 64
   offset: 4, 6
   index: 1
-Walking
+WALK
   rotate: false
   xy: 304, 2
   size: 44, 60
   orig: 64, 64
   offset: 8, 0
   index: 2
-Walking
+WALK
   rotate: false
   xy: 350, 2
   size: 30, 60
