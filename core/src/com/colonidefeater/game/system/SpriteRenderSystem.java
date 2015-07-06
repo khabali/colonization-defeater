@@ -1,5 +1,7 @@
 package com.colonidefeater.game.system;
 
+import static com.colonidefeater.game.utils.Constants.PPM;
+
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -12,7 +14,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
-import com.colonidefeater.game.utils.Constants;
 
 @Wire
 public class SpriteRenderSystem extends EntityProcessingSystem {
@@ -27,6 +28,7 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 
 	private SpriteBatch batch;
 	private float frameTime = 0;
+	private int doFlip = 1;
 
 	@SuppressWarnings("unchecked")
 	public SpriteRenderSystem() {
@@ -45,32 +47,29 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 		batch.begin();
 	}
 
+	/**
+	 * // process only entities that have a sprite and a position
+	 */
 	@Override
-	// process only entities that have a sprite and a position
 	protected void process(Entity e) {
 		final AnimationCpt animationCpt = animationMapper.get(e);
 		final PhysicsCpt physics = physicsMapper.get(e);
 		final Vector2 pos = physics.body.getPosition();
-		boolean doFlip = false;
 
 		String statename = "Default";
 		if (stateMapper.has(e)) {
 			final StateMachineCpt state = stateMapper.get(e);
 			statename = state.stateMachine.getCurrentState().toString();
-			doFlip = state.isLeftSided;
+			doFlip = (state.isLeftSided) ? -1 : 1;
 		}
 
-		animationCpt.updateState(statename);
+		final TextureRegion sprite = animationCpt.getKeyFrame(statename,
+				frameTime);
+		float xpos = (pos.x * PPM) - doFlip * sprite.getRegionWidth() / 2;
+		float ypos = (pos.y * PPM) - sprite.getRegionHeight() / 2;
 
-		final TextureRegion sprite = animationCpt.animation.getKeyFrame(
-				frameTime, true);
-		float xpos = (pos.x * Constants.PPM) - sprite.getRegionWidth() / 2;
-		float ypos = (pos.y * Constants.PPM) - sprite.getRegionHeight() / 2;
-		if (doFlip)
-			xpos += sprite.getRegionWidth();
-
-		batch.draw(sprite, xpos, ypos, doFlip ? -sprite.getRegionWidth()
-				: sprite.getRegionWidth(), sprite.getRegionHeight());
+		batch.draw(sprite, xpos, ypos, doFlip * sprite.getRegionWidth(),
+				sprite.getRegionHeight());
 	}
 
 	@Override

@@ -15,12 +15,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class MapBodyBuilder {
 
-	public static PolygonShape createRectangle(RectangleMapObject rectangleObject) {
+	public static PolygonShape createRectangle(
+			RectangleMapObject rectangleObject) {
 		final Rectangle rectangle = rectangleObject.getRectangle();
 		final PolygonShape polygon = new PolygonShape();
-		final Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / PPM,
-				(rectangle.y + rectangle.height * 0.5f) / PPM);
-		polygon.setAsBox(rectangle.width * 0.5f / PPM, rectangle.height * 0.5f / PPM, size, 0.0f);
+		polygon.setAsBox(rectangle.width * 0.5f / PPM, rectangle.height * 0.5f
+				/ PPM);
 		return polygon;
 	}
 
@@ -38,7 +38,8 @@ public class MapBodyBuilder {
 
 	public static PolygonShape getPolygon(PolygonMapObject polygonObject) {
 		final PolygonShape polygon = new PolygonShape();
-		final float[] vertices = polygonObject.getPolygon().getTransformedVertices();
+		final float[] vertices = polygonObject.getPolygon()
+				.getTransformedVertices();
 
 		final float[] worldVertices = new float[vertices.length];
 		for (int i = 0; i < vertices.length; ++i) {
@@ -50,7 +51,8 @@ public class MapBodyBuilder {
 	}
 
 	public static ChainShape createPolyline(PolylineMapObject polylineObject) {
-		final float[] vertices = polylineObject.getPolyline().getTransformedVertices();
+		final float[] vertices = polylineObject.getPolyline()
+				.getTransformedVertices();
 		final Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
 		for (int i = 0; i < vertices.length / 2; ++i) {

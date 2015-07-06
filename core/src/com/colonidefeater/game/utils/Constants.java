@@ -30,9 +30,8 @@ public class Constants {
 	// BOX2D
 	// ###################
 	public static final boolean isBox2dDebugEnabled = true;
-	public static final float TIME_STEP = 1 / 60f;
-	public static final int VELOCITY_ITERATIONS = 1;
-	public static final int POSITION_ITERATIONS = 1;
+	public static final int VELOCITY_ITERATIONS = 6;
+	public static final int POSITION_ITERATIONS = 2;
 	public static final float PPM = 100.0f; // Nombre de pixel par metre
 	public static final float playerMaxVel = 1f;
 

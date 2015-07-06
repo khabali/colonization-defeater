@@ -39,36 +39,43 @@ public class CameraSystem extends EntityProcessingSystem {
 
 		//
 		box2dCamera = new GameCamera();
-		box2dCamera.setToOrtho(false, V_WIDTH * SCALE / PPM, V_HEIGHT * SCALE / PPM);
+		box2dCamera.setToOrtho(false, V_WIDTH * SCALE / PPM, V_HEIGHT * SCALE
+				/ PPM);
 		box2dCamera.setBounds(0, xMax / PPM, 0, yMax / PPM);
 	}
 
 	@Override
 	protected void process(Entity e) {
+
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
 		final Vector2 playerVelocity = physicsCpt.body.getLinearVelocity();
-		
+
 		if (isOutOfViewPort(playerPosition.x)) {
 			float pushbackvel = playerVelocity.x > 0 ? 0.5f : -0.5f;
-			physicsCpt.body.setLinearVelocity(-(playerVelocity.x+pushbackvel), playerVelocity.y);
+			physicsCpt.body.setLinearVelocity(
+					-(playerVelocity.x + pushbackvel), playerVelocity.y);
 			GameLogger.debug(tag, "is out of view");
 			return;
 		}
 
-		gameCamera.setXPosition(playerPosition.x * PPM + gameCamera.viewportWidth / 8.0f);
+		gameCamera.setXPosition(playerPosition.x * PPM
+				+ gameCamera.viewportWidth / 8.0f);
 		gameCamera.update();
 
 		// box2d Camera
 		if (Constants.isBox2dDebugEnabled) {
-			box2dCamera.setXPosition(playerPosition.x + box2dCamera.viewportWidth / 8.0f);
+			box2dCamera.setXPosition(playerPosition.x
+					+ box2dCamera.viewportWidth / 8.0f);
 			box2dCamera.update();
 		}
 	}
-	
+
 	public boolean isOutOfViewPort(float x) {
-		float camx0 = (gameCamera.position.x - (gameCamera.viewportWidth/2))/PPM;
-		float camx1 = (gameCamera.position.x + (gameCamera.viewportWidth/2))/PPM;
+		float camx0 = (gameCamera.position.x - (gameCamera.viewportWidth / 2))
+				/ PPM;
+		float camx1 = (gameCamera.position.x + (gameCamera.viewportWidth / 2))
+				/ PPM;
 		return (x <= camx0 || x >= camx1);
 	}
 

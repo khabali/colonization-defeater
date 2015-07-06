@@ -43,7 +43,6 @@ public class TextureRenderSystem extends EntityProcessingSystem {
 	}
 
 	@Override
-	// process only entities that have a sprite and a position
 	protected void process(Entity e) {
 		final TextureCpt textureCpt = textureCptMapper.get(e);
 		final PhysicsCpt physics = physicsMapper.get(e);

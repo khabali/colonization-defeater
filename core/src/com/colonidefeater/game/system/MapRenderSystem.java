@@ -13,6 +13,7 @@ import com.colonidefeater.game.utils.Constants;
 @Wire
 public class MapRenderSystem extends VoidEntitySystem {
 
+	private final String tag = getClass().getName();
 	private final OrthogonalTiledMapRenderer tmRenderer;
 	private final SpriteBatch sbatch;
 	private final Texture fixedBackground;
@@ -23,7 +24,8 @@ public class MapRenderSystem extends VoidEntitySystem {
 	//
 	private CameraSystem cameraSystem;
 
-	public MapRenderSystem(TiledMap tiledMap, Texture fixedBackground, ParallaxeBackground[] backgrounds) {
+	public MapRenderSystem(TiledMap tiledMap, Texture fixedBackground,
+			ParallaxeBackground[] backgrounds) {
 		super();
 		tmRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		this.fixedBackground = fixedBackground;
@@ -31,17 +33,13 @@ public class MapRenderSystem extends VoidEntitySystem {
 
 		//
 		parallaxeBackgroundCam = new OrthographicCamera();
-		parallaxeBackgroundCam.setToOrtho(false, Constants.V_WIDTH * Constants.SCALE, Constants.V_HEIGHT
-				* Constants.SCALE);
+		parallaxeBackgroundCam.setToOrtho(false, Constants.V_WIDTH
+				* Constants.SCALE, Constants.V_HEIGHT * Constants.SCALE);
 		//
 		fixedBackgroundCam = new OrthographicCamera();
-		fixedBackgroundCam.setToOrtho(false, fixedBackground.getWidth(), fixedBackground.getHeight());
+		fixedBackgroundCam.setToOrtho(false, fixedBackground.getWidth(),
+				fixedBackground.getHeight());
 		sbatch = new SpriteBatch();
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
 	}
 
 	@Override

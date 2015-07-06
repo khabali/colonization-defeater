@@ -19,6 +19,7 @@ import com.colonidefeater.game.resources.AssetsManager;
 
 public class VirtualGamePad {
 
+	private static final float MAX_FPS = 1 / 30f;
 	private Stage stage;
 
 	// button
@@ -104,7 +105,7 @@ public class VirtualGamePad {
 	}
 
 	public void aupdateAndDraw() {
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 32f));
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), MAX_FPS));
 		stage.draw();
 
 		GameInput.setVKeyState(GameInput.LEFT, leftButton.isPressed());

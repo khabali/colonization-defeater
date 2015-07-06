@@ -11,6 +11,9 @@ import com.colonidefeater.game.component.PhysicsCpt;
 
 @Wire
 public class BulletSystem extends EntityProcessingSystem {
+
+	private final String tag = getClass().getName();
+
 	private ComponentMapper<BulletCpt> bulletCptMapper;
 	private ComponentMapper<PhysicsCpt> physicsCptMapper;
 
@@ -25,6 +28,7 @@ public class BulletSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void process(Entity e) {
+
 		final BulletCpt bulletCpt = bulletCptMapper.get(e);
 		final PhysicsCpt physicsCpt = physicsCptMapper.get(e);
 

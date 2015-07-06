@@ -13,7 +13,7 @@ public class AssetsManager {
 	public static final AssetManager manager = new AssetManager();
 
 	// -- MAIN MENU RESSOURCES
-	public static final String MENU_BG = "main_menu.png";
+	public static final String MENU_BG = "backgrounds/main_menu.png";
 
 	// -- Virtual Game Pad
 	public static final String BUTTON_LEFT = "virtualpad/left_button.png";
@@ -24,16 +24,15 @@ public class AssetsManager {
 	public static final String BUTTON_JUMP = "virtualpad/jump_button.png";
 
 	// -- Weapons powers
-	public static final String WP_H = "weapon_powers/h_weapon.png";
+	public static final String WP_H = "sprites/wp_powers/h_weapon.png";
 
 	// -- Backgrounds
-	public static final String BG_SKY = "sky.png";
+	public static final String BG_SKY = "backgrounds/sky.png";
 
 	// -- MAPS
 	public static final String MAP_LVL_1 = "maps/map_lvl1.tmx";
 
 	// -- SPRITES
-	public static final String SOCCER_BALL = "sprites/soccerball.txt";
 	public static final String STICK_MAN = "sprites/stickman/stickman.txt";
 	public static final String FIRE = "sprites/fire/fire.txt";
 

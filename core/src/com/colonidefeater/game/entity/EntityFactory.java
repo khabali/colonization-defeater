@@ -17,8 +17,8 @@ import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -73,30 +73,50 @@ public class EntityFactory {
 			World physicsHub, TiledMap map) {
 
 		final MapLayer playerMapLayer = map.getLayers().get(MAP_LAYER_PLAYER);
-		final EllipseMapObject playerMapObject = (EllipseMapObject) playerMapLayer
+		final RectangleMapObject playerMapObject = (RectangleMapObject) playerMapLayer
 				.getObjects().get(0);
+
+		float xpos = (Float) playerMapObject.getProperties().get(MAP_PROP_X);
+		float ypos = (Float) playerMapObject.getProperties().get(MAP_PROP_Y);
 
 		// -- create player box2d shape
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.x = (Float) playerMapObject.getProperties().get(
-				MAP_PROP_X)
-				/ PPM;
-		bodyDef.position.y = (Float) playerMapObject.getProperties().get(
-				MAP_PROP_Y)
-				/ PPM;
+		bodyDef.fixedRotation = true;
+		bodyDef.position.x = xpos / PPM;
+		bodyDef.position.y = ypos / PPM;
 		final Body body = physicsHub.createBody(bodyDef);
-		final CircleShape shape = MapBodyBuilder.createEllipse(playerMapObject);
+		final PolygonShape shape = MapBodyBuilder
+				.createRectangle(playerMapObject);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		// fixtureDef.density = 1.5f;
-		// fixtureDef.restitution = 0.4f;
+		body.createFixture(fixtureDef);
+
+		// FOOTS
+		float footSize = 5f;
+		float boundBoxH = playerMapObject.getRectangle().height;
+		float boundBoxW = playerMapObject.getRectangle().width;
+		final CircleShape foot = new CircleShape();
+		foot.setRadius(footSize / PPM);
+		foot.setPosition(new Vector2((footSize - boundBoxW) / 2 / PPM,
+				-boundBoxH / 2 / PPM));
+		fixtureDef.shape = foot;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 10f;
+		body.createFixture(fixtureDef);
+		// foot 2
+		foot.setPosition(new Vector2((boundBoxW - footSize) / 2 / PPM,
+				-boundBoxH / 2 / PPM));
+		fixtureDef.shape = foot;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 10f;
 		body.createFixture(fixtureDef);
 		shape.dispose();
+		foot.dispose();
 
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
-				.with(new AnimationCpt(AssetsManager.STICK_MAN, "stickman"),
+				.with(new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
 						new PlayerWeaponCpt(new GameWeapons.SimpleGun()),
 						new PlayerControlled()).tag("PLAYER").build();
@@ -130,8 +150,8 @@ public class EntityFactory {
 		shape.dispose();
 
 		return new EntityBuilder(owner.getWorld()).with(
-				new AnimationCpt(AssetsManager.FIRE, "fire"),
-				new PhysicsCpt(body), new BulletCpt(from, goLeft)).build();
+				new AnimationCpt(AssetsManager.FIRE), new PhysicsCpt(body),
+				new BulletCpt(from, goLeft)).build();
 	}
 
 	/**
@@ -166,7 +186,7 @@ public class EntityFactory {
 			body.createFixture(fixtureDef);
 			body.setUserData(type);
 			shape.dispose();
-
+			// TODO get type of power and load his sprite
 			new EntityBuilder(ecsHub).with(new PhysicsCpt(body),
 					new TextureCpt(AssetsManager.WP_H)).build();
 		}

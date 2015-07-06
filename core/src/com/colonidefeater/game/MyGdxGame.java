@@ -70,9 +70,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		if (Gdx.app.getType().equals(ApplicationType.Android)) {
 			virtualeGamePad.aupdateAndDraw();
+		} else {
+			GameInput.update(Gdx.graphics.getDeltaTime());
 		}
-
-		GameInput.update(Gdx.graphics.getDeltaTime());
 
 		// FPSLogger
 		GameFPSLogger.log();

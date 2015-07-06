@@ -71,7 +71,7 @@ public class Level1GameState extends GameStateAdapter {
 		ecsHub.setSystem(new BulletSystem(physicsHub));
 		ecsHub.setSystem(new SpriteRenderSystem());
 		ecsHub.setSystem(new TextureRenderSystem());
-		ecsHub.setSystem(new Box2dDebugRenderSystem());
+		ecsHub.setSystem(new Box2dDebugRenderSystem(physicsHub));
 		ecsHub.initialize();
 
 		EntityFactory.createGround(ecsHub, physicsHub, tiledMap);

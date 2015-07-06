@@ -10,7 +10,7 @@ import com.colonidefeater.game.component.StateMachineCpt;
 
 @Wire
 public class PlayerControlSystem extends EntityProcessingSystem {
-
+	private final String tag = getClass().getName();
 	private ComponentMapper<StateMachineCpt> stateMachineCptMapper;
 
 	@SuppressWarnings("unchecked")
