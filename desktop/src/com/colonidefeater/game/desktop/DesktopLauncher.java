@@ -8,9 +8,7 @@ import com.colonidefeater.game.utils.Constants;
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		final LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-
-		final LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = Constants.TITLE;
+		config.title = Constants.TITLE;
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }
