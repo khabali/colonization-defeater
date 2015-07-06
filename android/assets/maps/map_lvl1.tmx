@@ -12,9 +12,6 @@
  <tileset firstgid="4" name="mosque" tilewidth="114" tileheight="195">
   <image source="tiles/mosque.png" width="114" height="195"/>
  </tileset>
- <tileset firstgid="5" name="Standing_0" tilewidth="96" tileheight="96">
-  <image source="tiles/Standing_0.png" width="96" height="96"/>
- </tileset>
  <tileset firstgid="6" name="ruinstileset" tilewidth="16" tileheight="16">
   <image source="tiles/ruinstileset.gif" width="900" height="60"/>
  </tileset>
