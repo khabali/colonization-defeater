@@ -13,6 +13,8 @@ import static com.colonidefeater.game.utils.Constants.PPM;
 import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_SHOW;
 
 
+
+
 import java.util.Iterator;
 
 import com.artemis.Entity;
@@ -39,8 +41,8 @@ import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
-import com.colonidefeater.game.entity.state.PlayerState;
-import com.colonidefeater.game.entity.state.SoldierState;
+import com.colonidefeater.game.fsm.IdleSoldierState;
+import com.colonidefeater.game.fsm.PlayerState;
 import com.colonidefeater.game.fsm.StateMachine;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
@@ -98,7 +100,7 @@ public class EntityFactory {
 		StateMachineCpt stateMachine = new StateMachineCpt(
 				new StateMachine<Entity>(e));
 		e.edit().add(stateMachine);
-		stateMachine.stateMachine.setInitialState(SoldierState.STAND);
+		stateMachine.stateMachine.setInitialState(IdleSoldierState.STAND);
 	}
 
 	public static Entity createPlayer(com.artemis.World ecsHub,

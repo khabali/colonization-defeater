@@ -12,6 +12,7 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.VoidEntitySystem;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -23,16 +24,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.entity.EntityFactory;
+import com.colonidefeater.game.utils.Constants;
 
-public class SoldiersControlSystem extends EntityProcessingSystem {
+public class SoldierSpawnSystem extends VoidEntitySystem {
 	
 	private TiledMap map;
 	private World physicsHub;
 	private List<RectangleMapObject> hiddenSoldiers = new ArrayList<RectangleMapObject>();
 
-	@SuppressWarnings("unchecked")
-	public SoldiersControlSystem(World phy, TiledMap m) {
-		super(Aspect.getAspectForOne(PlayerControlled.class));
+	public SoldierSpawnSystem(World phy, TiledMap m) {
 		this.map = m;
 		this.physicsHub = phy;
 	}
@@ -49,15 +49,15 @@ public class SoldiersControlSystem extends EntityProcessingSystem {
 	}
 
 	@Override
-	protected void process(Entity e) {
+	protected void processSystem() {
 		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
 		Body playerBody = player.getComponent(PhysicsCpt.class).body;
+		float playerxpos = playerBody.getPosition().x * Constants.PPM;
 		for (int i=0; i<hiddenSoldiers.size(); i++) {
 			RectangleMapObject soldierObject = hiddenSoldiers.get(i);
 			float showDistance = Float.valueOf((String)soldierObject.getProperties().get(SOLDIER_PROP_SHOW));
 			float xpos = (Float) soldierObject.getProperties().get(MAP_PROP_X);
-			System.out.println("Enemy: " + xpos + "; player: " + playerBody.getPosition().x);
-			if (xpos - playerBody.getPosition().x <= showDistance) {
+			if (xpos - playerxpos <= showDistance) {
 				EntityFactory.createSoldier(world, physicsHub, map, soldierObject);
 				hiddenSoldiers.remove(soldierObject);
 			}

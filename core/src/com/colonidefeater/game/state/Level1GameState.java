@@ -19,7 +19,7 @@ import com.colonidefeater.game.system.BulletSystem;
 import com.colonidefeater.game.system.CameraSystem;
 import com.colonidefeater.game.system.MapRenderSystem;
 import com.colonidefeater.game.system.PlayerControlSystem;
-import com.colonidefeater.game.system.SoldiersControlSystem;
+import com.colonidefeater.game.system.SoldierSpawnSystem;
 import com.colonidefeater.game.system.SpriteRenderSystem;
 import com.colonidefeater.game.system.TextureRenderSystem;
 
@@ -72,7 +72,7 @@ public class Level1GameState extends GameStateAdapter {
 		ecsHub.setSystem(new BulletSystem(physicsHub));
 		ecsHub.setSystem(new SpriteRenderSystem());
 		ecsHub.setSystem(new TextureRenderSystem());
-		ecsHub.setSystem(new SoldiersControlSystem(physicsHub, tiledMap));
+		ecsHub.setSystem(new SoldierSpawnSystem(physicsHub, tiledMap));
 		ecsHub.setSystem(new Box2dDebugRenderSystem(physicsHub));
 		ecsHub.initialize();
 

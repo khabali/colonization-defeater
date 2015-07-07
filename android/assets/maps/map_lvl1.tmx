@@ -67,14 +67,16 @@
   </object>
  </objectgroup>
  <objectgroup name="soldiers">
-  <object id="11" x="580" y="31" width="64" height="64">
+  <object id="11" x="338" y="54" width="64" height="64">
    <properties>
-    <property name="ShowDistance" value="-3.00"/>
+    <property name="Behavior" value="follower"/>
+    <property name="ShowDistance" value="-239"/>
    </properties>
   </object>
   <object id="14" x="791" y="69" width="64" height="64">
    <properties>
-    <property name="ShowDistance" value="10.00"/>
+    <property name="Behavior" value="idle"/>
+    <property name="ShowDistance" value="453"/>
    </properties>
   </object>
  </objectgroup>

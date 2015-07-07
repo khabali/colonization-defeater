@@ -28,6 +28,7 @@ public class Constants {
 	public static final String MAP_PROP_TYPE = "type";
 	
 	public static final String SOLDIER_PROP_SHOW = "ShowDistance";
+	public static final String SOLDIER_PROP_BEHAVIOR = "Behavior";
 
 	// ###################
 	// BOX2D

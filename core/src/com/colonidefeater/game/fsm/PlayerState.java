@@ -1,4 +1,4 @@
-package com.colonidefeater.game.entity.state;
+package com.colonidefeater.game.fsm;
 
 import com.artemis.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
-import com.colonidefeater.game.fsm.State;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.utils.Constants;
 

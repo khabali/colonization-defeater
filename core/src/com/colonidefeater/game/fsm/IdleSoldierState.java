@@ -1,15 +1,14 @@
-package com.colonidefeater.game.entity.state;
+package com.colonidefeater.game.fsm;
 
 import com.artemis.Entity;
-import com.colonidefeater.game.fsm.State;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 
-public enum SoldierState implements State<Entity> {
+public enum IdleSoldierState implements State<Entity> {
 	
 	STAND() {
 
 		@Override
 		public void enter(Entity entity) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -25,8 +24,13 @@ public enum SoldierState implements State<Entity> {
 			
 		}
 		
-	}
+	};
 	
+	private Entity target;
+	
+	public void setTarget(Entity e) {
+		
+	}
 	
 
 }
