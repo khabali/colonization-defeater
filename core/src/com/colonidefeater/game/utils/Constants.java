@@ -14,6 +14,7 @@ public class Constants {
 	// MAP
 	// ###################
 	public static final String MAP_LAYER_PLAYER = "player";
+	public static final String MAP_LAYER_SOLDIERS = "soldiers";
 	public static final String MAP_LAYER_GROUND = "ground";
 	public static final String MAP_LAYER_WEAPONS = "weapons";
 	public static final String MAP_LAYER_BG_1 = "bg_1";
@@ -25,6 +26,8 @@ public class Constants {
 	public static final String MAP_PROP_X = "x";
 	public static final String MAP_PROP_Y = "y";
 	public static final String MAP_PROP_TYPE = "type";
+	
+	public static final String SOLDIER_PROP_SHOW = "ShowDistance";
 
 	// ###################
 	// BOX2D

@@ -2,6 +2,7 @@ package com.colonidefeater.game.entity;
 
 import static com.colonidefeater.game.utils.Constants.MAP_LAYER_GROUND;
 import static com.colonidefeater.game.utils.Constants.MAP_LAYER_PLAYER;
+import static com.colonidefeater.game.utils.Constants.MAP_LAYER_SOLDIERS;
 import static com.colonidefeater.game.utils.Constants.MAP_LAYER_WEAPONS;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_HEIGHT;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_TYPE;
@@ -9,6 +10,8 @@ import static com.colonidefeater.game.utils.Constants.MAP_PROP_WIDTH;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_X;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_Y;
 import static com.colonidefeater.game.utils.Constants.PPM;
+import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_SHOW;
+
 
 import java.util.Iterator;
 
@@ -37,6 +40,7 @@ import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
 import com.colonidefeater.game.entity.state.PlayerState;
+import com.colonidefeater.game.entity.state.SoldierState;
 import com.colonidefeater.game.fsm.StateMachine;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
@@ -67,6 +71,34 @@ public class EntityFactory {
 		}
 
 		return new EntityBuilder(ecsHub).with(new PhysicsCpt(body)).build();
+	}
+	
+	public static void createSoldier(com.artemis.World ecsHub,
+			World physicsHub, TiledMap map, RectangleMapObject enemyObject) {
+		float xpos = (Float) enemyObject.getProperties().get(MAP_PROP_X);
+		float ypos = (Float) enemyObject.getProperties().get(MAP_PROP_Y);
+		//float showDistance = Float.valueOf((String)enemyObject.getProperties().get(SOLDIER_PROP_SHOW));
+		// create enemy
+		final BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.fixedRotation = true;
+		bodyDef.position.x = xpos / PPM;
+		bodyDef.position.y = ypos / PPM;
+		final Body body = physicsHub.createBody(bodyDef);
+		final PolygonShape shape = MapBodyBuilder
+				.createRectangle(enemyObject);
+		final FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		body.createFixture(fixtureDef);
+		// -- create entity
+		Entity e = new EntityBuilder(ecsHub)
+				.with(new AnimationCpt(AssetsManager.STICK_MAN),
+						new PhysicsCpt(body),
+						new PlayerWeaponCpt(new GameWeapons.SimpleGun())).build();
+		StateMachineCpt stateMachine = new StateMachineCpt(
+				new StateMachine<Entity>(e));
+		e.edit().add(stateMachine);
+		stateMachine.stateMachine.setInitialState(SoldierState.STAND);
 	}
 
 	public static Entity createPlayer(com.artemis.World ecsHub,

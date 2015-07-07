@@ -48,7 +48,7 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 	}
 
 	/**
-	 * // process only entities that have a sprite and a position
+	 * // process only entities that have a body and an animation
 	 */
 	@Override
 	protected void process(Entity e) {
