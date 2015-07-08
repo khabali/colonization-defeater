@@ -1,0 +1,1 @@
+work derectory for environnement assets
