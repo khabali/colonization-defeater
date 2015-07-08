@@ -5,17 +5,15 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.StateMachineCpt;
 
 @Wire
-public class PlayerControlSystem extends EntityProcessingSystem {
-	private final String tag = getClass().getName();
+public class StateMachineSystem extends EntityProcessingSystem {
 	private ComponentMapper<StateMachineCpt> stateMachineCptMapper;
 
 	@SuppressWarnings("unchecked")
-	public PlayerControlSystem() {
-		super(Aspect.getAspectForOne(PlayerControlled.class));
+	public StateMachineSystem() {
+		super(Aspect.getAspectForOne(StateMachineCpt.class));
 	}
 
 	@Override

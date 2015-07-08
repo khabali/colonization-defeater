@@ -11,6 +11,9 @@ import static com.colonidefeater.game.utils.Constants.MAP_PROP_X;
 import static com.colonidefeater.game.utils.Constants.MAP_PROP_Y;
 import static com.colonidefeater.game.utils.Constants.PPM;
 import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_SHOW;
+import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_BEHAVIOR;
+
+
 
 
 
@@ -41,6 +44,7 @@ import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.PlayerWeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
+import com.colonidefeater.game.fsm.FollowerSoldierState;
 import com.colonidefeater.game.fsm.IdleSoldierState;
 import com.colonidefeater.game.fsm.PlayerState;
 import com.colonidefeater.game.fsm.StateMachine;
@@ -79,7 +83,7 @@ public class EntityFactory {
 			World physicsHub, TiledMap map, RectangleMapObject enemyObject) {
 		float xpos = (Float) enemyObject.getProperties().get(MAP_PROP_X);
 		float ypos = (Float) enemyObject.getProperties().get(MAP_PROP_Y);
-		//float showDistance = Float.valueOf((String)enemyObject.getProperties().get(SOLDIER_PROP_SHOW));
+		String behavior = (String) enemyObject.getProperties().get(SOLDIER_PROP_BEHAVIOR);
 		// create enemy
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
@@ -100,7 +104,12 @@ public class EntityFactory {
 		StateMachineCpt stateMachine = new StateMachineCpt(
 				new StateMachine<Entity>(e));
 		e.edit().add(stateMachine);
-		stateMachine.stateMachine.setInitialState(IdleSoldierState.STAND);
+		if (behavior.equals("idle")) {
+			stateMachine.stateMachine.setInitialState(IdleSoldierState.STAND);
+		}else if (behavior.equals("follower")) {
+			stateMachine.stateMachine.setInitialState(FollowerSoldierState.WALK);
+		}
+		
 	}
 
 	public static Entity createPlayer(com.artemis.World ecsHub,
