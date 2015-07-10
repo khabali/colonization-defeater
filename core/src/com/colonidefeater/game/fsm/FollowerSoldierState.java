@@ -5,6 +5,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.colonidefeater.game.component.PhysicsCpt;
+import com.colonidefeater.game.component.WeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.utils.Constants;
 
@@ -62,6 +63,7 @@ public enum FollowerSoldierState implements State<Entity> {
 		public void update(Entity entity) {
 			Body body = entity.getComponent(PhysicsCpt.class).body;
 			StateMachineCpt state = entity.getComponent(StateMachineCpt.class);
+			WeaponCpt weapon = entity.getComponent(WeaponCpt.class);
 			float playerx = target.getComponent(PhysicsCpt.class).body.getPosition().x;
 			Vector2 position = body.getPosition();
 			if (Math.abs(playerx-position.x) > followDistance) {
@@ -72,6 +74,7 @@ public enum FollowerSoldierState implements State<Entity> {
 			}else {
 				state.isLeftSided = false;
 			}
+			weapon.wpStore.getActifWeapon().fire(entity);
 		}
 
 		@Override

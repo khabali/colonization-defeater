@@ -41,7 +41,7 @@ import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.BulletCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
-import com.colonidefeater.game.component.PlayerWeaponCpt;
+import com.colonidefeater.game.component.WeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
 import com.colonidefeater.game.fsm.FollowerSoldierState;
@@ -95,12 +95,13 @@ public class EntityFactory {
 				.createRectangle(enemyObject);
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
+		fixtureDef.filter.groupIndex = -2;
 		body.createFixture(fixtureDef);
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
 				.with(new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
-						new PlayerWeaponCpt(new GameWeapons.SimpleGun())).build();
+						new WeaponCpt(new GameWeapons.SimpleGun())).build();
 		StateMachineCpt stateMachine = new StateMachineCpt(
 				new StateMachine<Entity>(e));
 		e.edit().add(stateMachine);
@@ -161,7 +162,7 @@ public class EntityFactory {
 		Entity e = new EntityBuilder(ecsHub)
 				.with(new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
-						new PlayerWeaponCpt(new GameWeapons.SimpleGun()),
+						new WeaponCpt(new GameWeapons.SimpleGun()),
 						new PlayerControlled()).tag("PLAYER").build();
 		StateMachineCpt stateMachine = new StateMachineCpt(
 				new StateMachine<Entity>(e));
@@ -226,6 +227,7 @@ public class EntityFactory {
 			fixtureDef.shape = shape;
 			fixtureDef.density = 1f;
 			fixtureDef.restitution = 0.2f;
+			fixtureDef.filter.groupIndex = -2;
 			body.createFixture(fixtureDef);
 			body.setUserData(type);
 			shape.dispose();

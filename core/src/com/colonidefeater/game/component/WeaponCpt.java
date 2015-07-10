@@ -4,11 +4,11 @@ import com.artemis.Component;
 import com.colonidefeater.game.weapon.Weapon;
 import com.colonidefeater.game.weapon.WeaponStore;
 
-public class PlayerWeaponCpt extends Component {
+public class WeaponCpt extends Component {
 
 	public WeaponStore wpStore;
 
-	public PlayerWeaponCpt(Weapon defaultWeapon) {
+	public WeaponCpt(Weapon defaultWeapon) {
 		wpStore = new WeaponStore(defaultWeapon);
 	}
 

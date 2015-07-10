@@ -6,69 +6,125 @@ STAND
   rotate: false
   xy: 2, 2
   size: 42, 60
-  orig: 64, 64
-  offset: 14, 0
+  orig: 46, 64
+  offset: 2, 2
   index: -1
 JUMP
   rotate: false
   xy: 2, 2
   size: 42, 60
-  orig: 64, 64
-  offset: 14, 0
+  orig: 46, 64
+  offset: 2, 2
   index: -1
 STAND_AND_FIRE
   rotate: false
-  xy: 46, 2
+  xy: 2, 64
   size: 50, 60
-  orig: 64, 64
-  offset: 14, 0
+  orig: 51, 64
+  offset: 0, 2
   index: -1
 JUMP_AND_FIRE
   rotate: false
-  xy: 46, 2
+  xy: 2, 64
   size: 50, 60
-  orig: 64, 64
-  offset: 14, 0
+  orig: 51, 64
+  offset: 0, 2
   index: -1
-WALK_AND_FIRE
+STAND_UP
   rotate: false
-  xy: 98, 2
-  size: 57, 56
-  orig: 64, 64
-  offset: 4, 6
-  index: 1
-WALK_AND_FIRE
-  rotate: false
-  xy: 157, 2
-  size: 53, 60
-  orig: 64, 64
-  offset: 8, 0
-  index: 2
-WALK_AND_FIRE
-  rotate: false
-  xy: 212, 2
-  size: 40, 60
-  orig: 64, 64
-  offset: 20, 0
-  index: 3
-WALK
-  rotate: false
-  xy: 254, 2
-  size: 48, 56
-  orig: 64, 64
-  offset: 4, 6
-  index: 1
-WALK
-  rotate: false
-  xy: 304, 2
-  size: 44, 60
-  orig: 64, 64
-  offset: 8, 0
-  index: 2
-WALK
-  rotate: false
-  xy: 350, 2
+  xy: 2, 126
   size: 30, 60
-  orig: 64, 64
-  offset: 20, 0
+  orig: 46, 64
+  offset: 2, 2
+  index: -1
+STAND_UP_AND_FIRE
+  rotate: false
+  xy: 2, 188
+  size: 31, 61
+  orig: 51, 64
+  offset: 0, 2
+  index: -1
+WALK
+  rotate: false
+  xy: 2, 251
+  size: 30, 60
+  orig: 31, 64
+  offset: 0, 2
+  index: 1
+WALK
+  rotate: false
+  xy: 2, 313
+  size: 44, 60
+  orig: 45, 64
+  offset: 0, 2
+  index: 2
+WALK
+  rotate: false
+  xy: 2, 375
+  size: 48, 56
+  orig: 50, 64
+  offset: 0, 6
+  index: 3
+WALK_AND_FIRE
+  rotate: false
+  xy: 2, 433
+  size: 40, 60
+  orig: 42, 64
+  offset: 2, 2
+  index: 1
+WALK_AND_FIRE
+  rotate: false
+  xy: 2, 495
+  size: 53, 60
+  orig: 54, 64
+  offset: 1, 2
+  index: 2
+WALK_AND_FIRE
+  rotate: false
+  xy: 2, 557
+  size: 57, 56
+  orig: 57, 64
+  offset: 0, 6
+  index: 3
+WALK_AND_FIRE_UP
+  rotate: false
+  xy: 2, 615
+  size: 29, 60
+  orig: 31, 64
+  offset: 0, 2
+  index: 1
+WALK_UP
+  rotate: false
+  xy: 2, 615
+  size: 29, 60
+  orig: 31, 64
+  offset: 0, 2
+  index: 1
+WALK_AND_FIRE_UP
+  rotate: false
+  xy: 2, 677
+  size: 40, 60
+  orig: 45, 64
+  offset: 0, 2
+  index: 2
+WALK_UP
+  rotate: false
+  xy: 2, 677
+  size: 40, 60
+  orig: 45, 64
+  offset: 0, 2
+  index: 2
+WALK_AND_FIRE_UP
+  rotate: false
+  xy: 2, 739
+  size: 45, 56
+  orig: 50, 64
+  offset: 0, 6
+  index: 3
+WALK_UP
+  rotate: false
+  xy: 2, 739
+  size: 45, 56
+  orig: 50, 64
+  offset: 0, 6
   index: 3

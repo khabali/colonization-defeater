@@ -4,7 +4,7 @@ import com.artemis.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.colonidefeater.game.component.PhysicsCpt;
-import com.colonidefeater.game.component.PlayerWeaponCpt;
+import com.colonidefeater.game.component.WeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.utils.Constants;
@@ -35,6 +35,9 @@ public enum PlayerState implements State<Entity> {
 					|| GameInput.isHolded(GameInput.LEFT)) {
 				stateCpt.stateMachine.changeState(WALK);
 			}
+			if (GameInput.isHolded(GameInput.UP)) {
+				stateCpt.stateMachine.changeState(STAND_UP);
+			}
 			if (GameInput.isPressed(GameInput.JUMP)) {
 				doJump(physic.body);
 				stateCpt.stateMachine.changeState(JUMP);
@@ -43,6 +46,44 @@ public enum PlayerState implements State<Entity> {
 				stateCpt.stateMachine.changeState(STAND_AND_FIRE);
 			}
 		}
+	},
+	
+	STAND_UP() {
+		
+		private StateMachineCpt stateCpt;
+
+		@Override
+		public void enter(Entity entity) {
+			stateCpt = entity.getComponent(StateMachineCpt.class);
+		}
+
+		@Override
+		public void update(Entity entity) {
+			handleInput(entity);
+		}
+		
+		private void handleInput(Entity entity) {
+			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
+			if (GameInput.isHolded(GameInput.RIGHT)
+					|| GameInput.isHolded(GameInput.LEFT)) {
+				stateCpt.stateMachine.changeState(WALK_UP);
+			}
+			if (GameInput.isPressed(GameInput.JUMP)) {
+				doJump(physic.body);
+				stateCpt.stateMachine.changeState(JUMP);
+			}
+			if (GameInput.isHolded(GameInput.FIRE)) {
+				stateCpt.stateMachine.changeState(STAND_UP_AND_FIRE);
+			}
+			if (!GameInput.isHolded(GameInput.UP)) {
+				stateCpt.stateMachine.changeState(STAND);
+			}
+		}
+
+		@Override
+		public void exit(Entity entity) {
+		}
+		
 	},
 
 	WALK() {
@@ -85,6 +126,9 @@ public enum PlayerState implements State<Entity> {
 						position.y, true);
 				state.isLeftSided = true;
 			}
+			if (GameInput.isHolded(GameInput.UP)) {
+				stateCpt.stateMachine.changeState(WALK_UP);
+			}
 			if (GameInput.isPressed(GameInput.JUMP)) {
 				doJump(physic.body);
 				stateCpt.stateMachine.changeState(JUMP);
@@ -93,6 +137,53 @@ public enum PlayerState implements State<Entity> {
 				stateCpt.stateMachine.changeState(WALK_AND_FIRE);
 			}
 		}
+	},
+	
+	WALK_UP() {
+
+		private StateMachineCpt stateCpt;
+
+		@Override
+		public void enter(Entity entity) {
+			stateCpt = entity.getComponent(StateMachineCpt.class);
+		}
+
+		@Override
+		public void update(Entity entity) {
+			handleInput(entity);
+			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
+			final Vector2 vel = physic.body.getLinearVelocity();
+			if (Math.abs(vel.x) <= 0.1)
+				stateCpt.stateMachine.changeState(STAND_UP);
+		}
+		
+		private void handleInput(Entity entity) {
+			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
+			StateMachineCpt state = entity.getComponent(StateMachineCpt.class);
+
+			final Vector2 position = physic.body.getPosition();
+			final Vector2 vel = physic.body.getLinearVelocity();
+			if (GameInput.isHolded(GameInput.RIGHT)
+					&& vel.x < Constants.playerMaxVel) {
+				physic.body.applyLinearImpulse(0.1f, 0, position.x, position.y,
+						true);
+				state.isLeftSided = false;
+			}
+			if (GameInput.isHolded(GameInput.LEFT)
+					&& vel.x > -Constants.playerMaxVel) {
+				physic.body.applyLinearImpulse(-0.1f, 0, position.x,
+						position.y, true);
+				state.isLeftSided = true;
+			}
+			if (!GameInput.isHolded(GameInput.UP)) {
+				stateCpt.stateMachine.changeState(WALK);
+			}
+		}
+
+		@Override
+		public void exit(Entity entity) {
+		}
+		
 	},
 
 	JUMP() {
@@ -119,8 +210,25 @@ public enum PlayerState implements State<Entity> {
 		}
 
 		private void handleInput(Entity entity) {
+			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
+			StateMachineCpt state = entity.getComponent(StateMachineCpt.class);
+
+			final Vector2 position = physic.body.getPosition();
+			final Vector2 vel = physic.body.getLinearVelocity();
 			if (GameInput.isHolded(GameInput.FIRE)) {
 				stateCpt.stateMachine.changeState(JUMP_AND_FIRE);
+			}
+			if (GameInput.isHolded(GameInput.RIGHT)
+					&& vel.x < Constants.playerMaxVel) {
+				physic.body.applyLinearImpulse(0.1f, 0, position.x, position.y,
+						true);
+				state.isLeftSided = false;
+			}
+			if (GameInput.isHolded(GameInput.LEFT)
+					&& vel.x > -Constants.playerMaxVel) {
+				physic.body.applyLinearImpulse(-0.1f, 0, position.x,
+						position.y, true);
+				state.isLeftSided = true;
 			}
 		}
 	},
@@ -145,7 +253,7 @@ public enum PlayerState implements State<Entity> {
 
 		private void handleInput(Entity entity) {
 			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
-			PlayerWeaponCpt weapon = entity.getComponent(PlayerWeaponCpt.class);
+			WeaponCpt weapon = entity.getComponent(WeaponCpt.class);
 			if (GameInput.isHolded(GameInput.FIRE)) {
 				// fire bullet
 				weapon.wpStore.getActifWeapon().fire(entity);
@@ -162,6 +270,54 @@ public enum PlayerState implements State<Entity> {
 				stateCpt.stateMachine.changeState(STAND);
 			}
 		}
+	},
+	
+	STAND_UP_AND_FIRE() {
+		
+		private StateMachineCpt stateCpt;
+
+		@Override
+		public void enter(Entity entity) {
+			stateCpt = entity.getComponent(StateMachineCpt.class);
+		}
+
+		@Override
+		public void update(Entity entity) {
+			handleInput(entity);
+		}
+		
+		private void handleInput(Entity entity) {
+			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
+			WeaponCpt weapon = entity.getComponent(WeaponCpt.class);
+			if (GameInput.isHolded(GameInput.FIRE)) {
+				// fire bullet
+				weapon.wpStore.getActifWeapon().fire(entity);
+				// handle other input
+				if (GameInput.isHolded(GameInput.LEFT)
+						|| GameInput.isHolded(GameInput.RIGHT)) {
+					stateCpt.stateMachine.changeState(WALK_AND_FIRE);
+				}
+				if (GameInput.isPressed(GameInput.JUMP)) {
+					PlayerState.JUMP.doJump(physic.body);
+					stateCpt.stateMachine.changeState(JUMP_AND_FIRE);
+				}
+				if (!GameInput.isHolded(GameInput.UP)) {
+					stateCpt.stateMachine.changeState(STAND_AND_FIRE);
+				}
+			} else {
+				if (!GameInput.isHolded(GameInput.UP)) {
+					stateCpt.stateMachine.changeState(STAND);
+				}
+				stateCpt.stateMachine.changeState(STAND_UP);
+			}
+		}
+
+		@Override
+		public void exit(Entity entity) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	},
 
 	WALK_AND_FIRE() {
@@ -185,7 +341,7 @@ public enum PlayerState implements State<Entity> {
 		private void handleInput(Entity e) {
 			PhysicsCpt physic = e.getComponent(PhysicsCpt.class);
 			StateMachineCpt state = e.getComponent(StateMachineCpt.class);
-			PlayerWeaponCpt weapon = e.getComponent(PlayerWeaponCpt.class);
+			WeaponCpt weapon = e.getComponent(WeaponCpt.class);
 
 			if (GameInput.isHolded(GameInput.FIRE)) {
 				final Vector2 position = physic.body.getPosition();
@@ -231,7 +387,7 @@ public enum PlayerState implements State<Entity> {
 		@Override
 		public void update(Entity entity) {
 			handleInput(entity);
-			PlayerWeaponCpt weapon = entity.getComponent(PlayerWeaponCpt.class);
+			WeaponCpt weapon = entity.getComponent(WeaponCpt.class);
 			weapon.wpStore.getActifWeapon().fire(entity);
 			PhysicsCpt physic = entity.getComponent(PhysicsCpt.class);
 			final Vector2 vel = physic.body.getLinearVelocity();
