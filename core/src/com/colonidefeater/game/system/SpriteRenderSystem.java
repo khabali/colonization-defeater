@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
+import com.colonidefeater.game.utils.Direction;
 
 @Wire
 public class SpriteRenderSystem extends EntityProcessingSystem {
@@ -55,16 +56,16 @@ public class SpriteRenderSystem extends EntityProcessingSystem {
 		final AnimationCpt animationCpt = animationMapper.get(e);
 		final PhysicsCpt physics = physicsMapper.get(e);
 		final Vector2 pos = physics.body.getPosition();
-
-		String statename = "Default";
+		
+		String animId = "DEFAULT";
 		if (stateMapper.has(e)) {
 			final StateMachineCpt state = stateMapper.get(e);
-			statename = state.stateMachine.getCurrentState().toString();
-			doFlip = (state.isLeftSided) ? -1 : 1;
+			animId = state.getId();
+			doFlip = (state.dir == Direction.left) ? -1 : 1;
 		}
+		animationCpt.loadAnimation(animId);
 
-		final TextureRegion sprite = animationCpt.getKeyFrame(statename,
-				frameTime);
+		final TextureRegion sprite = animationCpt.getKeyFrame(frameTime);
 		float xpos = (pos.x * PPM) - doFlip * sprite.getRegionWidth() / 2;
 		float ypos = (pos.y * PPM) - sprite.getRegionHeight() / 2;
 

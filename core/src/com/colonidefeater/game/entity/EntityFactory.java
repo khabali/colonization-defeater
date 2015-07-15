@@ -18,6 +18,13 @@ import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_BEHAVIOR;
 
 
 
+
+
+
+
+
+
+
 import java.util.Iterator;
 
 import com.artemis.Entity;
@@ -44,12 +51,15 @@ import com.colonidefeater.game.component.PlayerControlled;
 import com.colonidefeater.game.component.WeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
-import com.colonidefeater.game.fsm.FollowerSoldierState;
-import com.colonidefeater.game.fsm.IdleSoldierState;
-import com.colonidefeater.game.fsm.PlayerState;
 import com.colonidefeater.game.fsm.StateMachine;
+import com.colonidefeater.game.fsm.player.PlayerActionState;
+import com.colonidefeater.game.fsm.player.PlayerDirectionState;
+import com.colonidefeater.game.fsm.player.PlayerMovementState;
+import com.colonidefeater.game.fsm.soldier.FollowerSoldierState;
+import com.colonidefeater.game.fsm.soldier.IdleSoldierState;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
+import com.colonidefeater.game.utils.Direction;
 import com.colonidefeater.game.utils.MapBodyBuilder;
 import com.colonidefeater.game.weapon.GameWeapons;
 
@@ -102,14 +112,13 @@ public class EntityFactory {
 				.with(new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
 						new WeaponCpt(new GameWeapons.SimpleGun())).build();
-		StateMachineCpt stateMachine = new StateMachineCpt(
-				new StateMachine<Entity>(e));
-		e.edit().add(stateMachine);
+		StateMachineCpt stateMachine = new StateMachineCpt();
 		if (behavior.equals("idle")) {
-			stateMachine.stateMachine.setInitialState(IdleSoldierState.STAND);
+			stateMachine.add(IdleSoldierState.class, e, IdleSoldierState.STAND_IDLE_SIDE);
 		}else if (behavior.equals("follower")) {
-			stateMachine.stateMachine.setInitialState(FollowerSoldierState.WALK);
+			stateMachine.add(FollowerSoldierState.class, e, FollowerSoldierState.WALK_IDLE_SIDE);
 		}
+		e.edit().add(stateMachine);
 		
 	}
 
@@ -164,10 +173,11 @@ public class EntityFactory {
 						new PhysicsCpt(body),
 						new WeaponCpt(new GameWeapons.SimpleGun()),
 						new PlayerControlled()).tag("PLAYER").build();
-		StateMachineCpt stateMachine = new StateMachineCpt(
-				new StateMachine<Entity>(e));
+		StateMachineCpt stateMachine = new StateMachineCpt();
 		e.edit().add(stateMachine);
-		stateMachine.stateMachine.setInitialState(PlayerState.STAND);
+		stateMachine.add(PlayerMovementState.class, e, PlayerMovementState.STAND);
+		stateMachine.add(PlayerActionState.class, e, PlayerActionState.IDLE);
+		stateMachine.add(PlayerDirectionState.class, e, PlayerDirectionState.SIDE);
 		return e;
 	}
 
@@ -177,9 +187,9 @@ public class EntityFactory {
 		StateMachineCpt stateCpt = owner.getComponent(StateMachineCpt.class);
 		PhysicsCpt physicCpt = owner.getComponent(PhysicsCpt.class);
 		Vector2 from = physicCpt.body.getPosition();
-		boolean goLeft = stateCpt.isLeftSided;
-		from.y += 0.05;
-		from.x += goLeft ? -0.5f : 0.5f;
+		//boolean goLeft = stateCpt.dir == Direction.left;
+		//from.y += 0.05;
+		//from.x += goLeft ? -0.5f : 0.5f;
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.bullet = true;
@@ -192,10 +202,17 @@ public class EntityFactory {
 		fixtureDef.isSensor = true;
 		body.createFixture(fixtureDef);
 		shape.dispose();
-
+		//bullet direction
+		Direction dir = stateCpt.dir;
+		if (stateCpt.get(PlayerDirectionState.class).getCurrentState() == PlayerDirectionState.UP) {
+			dir = Direction.top;
+		}
+		if (stateCpt.get(PlayerDirectionState.class).getCurrentState() == PlayerDirectionState.DOWN) {
+			dir = Direction.down;
+		}
 		return new EntityBuilder(owner.getWorld()).with(
 				new AnimationCpt(AssetsManager.FIRE), new PhysicsCpt(body),
-				new BulletCpt(from, goLeft)).build();
+				new BulletCpt(from, dir)).build();
 	}
 
 	/**

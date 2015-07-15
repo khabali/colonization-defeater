@@ -2,126 +2,140 @@ stickman.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-STAND
+STAND_IDLE_SIDE
   rotate: false
   xy: 2, 2
   size: 42, 60
   orig: 46, 64
   offset: 2, 2
   index: -1
-JUMP
+JUMP_IDLE_SIDE
   rotate: false
   xy: 2, 2
   size: 42, 60
   orig: 46, 64
   offset: 2, 2
   index: -1
-STAND_AND_FIRE
+STAND_ATTACK_SIDE
   rotate: false
   xy: 2, 64
   size: 50, 60
   orig: 51, 64
   offset: 0, 2
   index: -1
-JUMP_AND_FIRE
+JUMP_ATTACK_SIDE
   rotate: false
   xy: 2, 64
   size: 50, 60
   orig: 51, 64
   offset: 0, 2
   index: -1
-STAND_UP
+STAND_IDLE_UP
   rotate: false
   xy: 2, 126
   size: 30, 60
   orig: 46, 64
   offset: 2, 2
   index: -1
-STAND_UP_AND_FIRE
+JUMP_IDLE_UP
+  rotate: false
+  xy: 2, 126
+  size: 30, 60
+  orig: 46, 64
+  offset: 2, 2
+  index: -1
+STAND_ATTACK_UP
   rotate: false
   xy: 2, 188
   size: 31, 61
   orig: 51, 64
   offset: 0, 2
   index: -1
-WALK
+JUMP_ATTACK_UP
+  rotate: false
+  xy: 2, 188
+  size: 31, 61
+  orig: 51, 64
+  offset: 0, 2
+  index: -1
+WALK_IDLE_SIDE
   rotate: false
   xy: 2, 251
   size: 30, 60
   orig: 31, 64
   offset: 0, 2
   index: 1
-WALK
+WALK_IDLE_SIDE
   rotate: false
   xy: 2, 313
   size: 44, 60
   orig: 45, 64
   offset: 0, 2
   index: 2
-WALK
+WALK_IDLE_SIDE
   rotate: false
   xy: 2, 375
   size: 48, 56
   orig: 50, 64
   offset: 0, 6
   index: 3
-WALK_AND_FIRE
+WALK_ATTACK_SIDE
   rotate: false
   xy: 2, 433
   size: 40, 60
   orig: 42, 64
   offset: 2, 2
   index: 1
-WALK_AND_FIRE
+WALK_ATTACK_SIDE
   rotate: false
   xy: 2, 495
   size: 53, 60
   orig: 54, 64
   offset: 1, 2
   index: 2
-WALK_AND_FIRE
+WALK_ATTACK_SIDE
   rotate: false
   xy: 2, 557
   size: 57, 56
   orig: 57, 64
   offset: 0, 6
   index: 3
-WALK_AND_FIRE_UP
+WALK_ATTACK_UP
   rotate: false
   xy: 2, 615
   size: 29, 60
   orig: 31, 64
   offset: 0, 2
   index: 1
-WALK_UP
+WALK_IDLE_UP
   rotate: false
   xy: 2, 615
   size: 29, 60
   orig: 31, 64
   offset: 0, 2
   index: 1
-WALK_AND_FIRE_UP
+WALK_ATTACK_UP
   rotate: false
   xy: 2, 677
   size: 40, 60
   orig: 45, 64
   offset: 0, 2
   index: 2
-WALK_UP
+WALK_IDLE_UP
   rotate: false
   xy: 2, 677
   size: 40, 60
   orig: 45, 64
   offset: 0, 2
   index: 2
-WALK_AND_FIRE_UP
+WALK_ATTACK_UP
   rotate: false
   xy: 2, 739
   size: 45, 56
   orig: 50, 64
   offset: 0, 6
   index: 3
-WALK_UP
+WALK_IDLE_UP
   rotate: false
   xy: 2, 739
   size: 45, 56

@@ -1,15 +1,17 @@
-package com.colonidefeater.game.fsm;
+package com.colonidefeater.game.fsm.soldier;
 
 import com.artemis.Entity;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
+import com.colonidefeater.game.fsm.State;
+import com.colonidefeater.game.utils.Direction;
 
 // Idle soldier state machine
 public enum IdleSoldierState implements State<Entity> {
 	
-	STAND() {
+	STAND_IDLE_SIDE() {
 		
 		private Entity target;
 
@@ -23,9 +25,9 @@ public enum IdleSoldierState implements State<Entity> {
 			float playerx = target.getComponent(PhysicsCpt.class).body.getPosition().x;
 			float x = entity.getComponent(PhysicsCpt.class).body.getPosition().x;
 			if (playerx < x) {
-				entity.getComponent(StateMachineCpt.class).isLeftSided = true;
+				entity.getComponent(StateMachineCpt.class).dir = Direction.right;
 			}else {
-				entity.getComponent(StateMachineCpt.class).isLeftSided = false;
+				entity.getComponent(StateMachineCpt.class).dir = Direction.left;
 			}
 		}
 

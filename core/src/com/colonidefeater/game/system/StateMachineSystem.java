@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.colonidefeater.game.component.StateMachineCpt;
+import com.colonidefeater.game.fsm.StateMachine;
 
 @Wire
 public class StateMachineSystem extends EntityProcessingSystem {
@@ -19,7 +20,9 @@ public class StateMachineSystem extends EntityProcessingSystem {
 	@Override
 	protected void process(Entity e) {
 		final StateMachineCpt stateCpt = stateMachineCptMapper.get(e);
-		stateCpt.stateMachine.update();
+		for (StateMachine<Entity> sm : stateCpt.stateMachines.values()) {
+			sm.update();
+		}
 	}
 
 }

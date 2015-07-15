@@ -24,10 +24,10 @@ public class AnimationCpt extends Component {
 
 		animations = new HashMap<String, Animation>();
 	}
-
-	public TextureRegion getKeyFrame(String id, float frameTime) {
+	
+	public void loadAnimation(String id) {
+		curId = id;
 		if (!animations.containsKey(id)) {
-			curId = id;
 			spriteSet = texture.createSprites(id);
 			if (spriteSet.size == 0) {
 				throw new RuntimeException(id
@@ -35,8 +35,10 @@ public class AnimationCpt extends Component {
 			}
 			animations.put(id, new Animation(0.090f, spriteSet));
 		}
+	}
 
-		return animations.get(id).getKeyFrame(frameTime, true);
+	public TextureRegion getKeyFrame(float frameTime) {
+		return animations.get(curId).getKeyFrame(frameTime, true);
 	}
 
 }

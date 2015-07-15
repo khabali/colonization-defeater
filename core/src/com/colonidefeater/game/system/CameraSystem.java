@@ -51,11 +51,11 @@ public class CameraSystem extends EntityProcessingSystem {
 		final Vector2 playerPosition = physicsCpt.body.getPosition();
 		final Vector2 playerVelocity = physicsCpt.body.getLinearVelocity();
 
-		if (isOutOfViewPort(playerPosition.x)) {
+		if (isOutOfViewPort(playerPosition.x, playerPosition.y)) {
 			float pushbackvel = playerVelocity.x > 0 ? 0.5f : -0.5f;
 			physicsCpt.body.setLinearVelocity(
 					-(playerVelocity.x + pushbackvel), playerVelocity.y);
-			GameLogger.debug(tag, "is out of view");
+			GameLogger.debug(tag, "player out of view");
 			return;
 		}
 
@@ -71,12 +71,20 @@ public class CameraSystem extends EntityProcessingSystem {
 		}
 	}
 
-	public boolean isOutOfViewPort(float x) {
+	public boolean isOutOfViewPort(float x, float y) {
 		float camx0 = (gameCamera.position.x - (gameCamera.viewportWidth / 2))
 				/ PPM;
 		float camx1 = (gameCamera.position.x + (gameCamera.viewportWidth / 2))
 				/ PPM;
-		return (x <= camx0 || x >= camx1);
+		float camy0 = (gameCamera.position.y - (gameCamera.viewportHeight / 2)) / PPM;
+		float camy1 = (gameCamera.position.y + (gameCamera.viewportHeight / 2)) / PPM;
+		boolean b0 = (x <= camx0 || x >= camx1);
+		boolean b1 = (y <= camy0 || y >= camy1);
+		return b0 || b1;
+	}
+	
+	public boolean isOutOfViewPort(Vector2 v) {
+		return isOutOfViewPort(v.x, v.y);
 	}
 
 }
