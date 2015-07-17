@@ -89,7 +89,7 @@ public class EntityFactory {
 		return new EntityBuilder(ecsHub).with(new PhysicsCpt(body)).build();
 	}
 	
-	public static void createSoldier(com.artemis.World ecsHub,
+	public static Entity createSoldier(com.artemis.World ecsHub,
 			World physicsHub, TiledMap map, RectangleMapObject enemyObject) {
 		float xpos = (Float) enemyObject.getProperties().get(MAP_PROP_X);
 		float ypos = (Float) enemyObject.getProperties().get(MAP_PROP_Y);
@@ -119,7 +119,8 @@ public class EntityFactory {
 			stateMachine.add(FollowerSoldierState.class, e, FollowerSoldierState.WALK_IDLE_SIDE);
 		}
 		e.edit().add(stateMachine);
-		
+		body.setUserData(e); //link entity to body
+		return e;
 	}
 
 	public static Entity createPlayer(com.artemis.World ecsHub,
@@ -178,12 +179,12 @@ public class EntityFactory {
 		stateMachine.add(PlayerMovementState.class, e, PlayerMovementState.STAND);
 		stateMachine.add(PlayerActionState.class, e, PlayerActionState.IDLE);
 		stateMachine.add(PlayerDirectionState.class, e, PlayerDirectionState.SIDE);
+		body.setUserData(e);
 		return e;
 	}
 
 	// set <to> to null to make it move screen wide
 	public static Entity createBullet(Entity owner, float dammage) {
-
 		StateMachineCpt stateCpt = owner.getComponent(StateMachineCpt.class);
 		PhysicsCpt physicCpt = owner.getComponent(PhysicsCpt.class);
 		Vector2 from = physicCpt.body.getPosition();
@@ -210,9 +211,11 @@ public class EntityFactory {
 		if (stateCpt.get(PlayerDirectionState.class).getCurrentState() == PlayerDirectionState.DOWN) {
 			dir = Direction.down;
 		}
-		return new EntityBuilder(owner.getWorld()).with(
+		Entity e = new EntityBuilder(owner.getWorld()).with(
 				new AnimationCpt(AssetsManager.FIRE), new PhysicsCpt(body),
 				new BulletCpt(from, dir)).build();
+		body.setUserData(e); //link entity to body
+		return e;
 	}
 
 	/**
@@ -225,7 +228,6 @@ public class EntityFactory {
 	 */
 	public static void createWeaponsPowers(com.artemis.World ecsHub,
 			World physicsHub, TiledMap map) {
-
 		final MapLayer wpsLayer = map.getLayers().get(MAP_LAYER_WEAPONS);
 		for (MapObject power : wpsLayer.getObjects()) {
 			float x = (Float) power.getProperties().get(MAP_PROP_X);
@@ -249,8 +251,9 @@ public class EntityFactory {
 			body.setUserData(type);
 			shape.dispose();
 			// TODO get type of power and load his sprite
-			new EntityBuilder(ecsHub).with(new PhysicsCpt(body),
+			Entity e = new EntityBuilder(ecsHub).with(new PhysicsCpt(body),
 					new TextureCpt(AssetsManager.WP_H)).build();
+			body.setUserData(e); //link entity to body
 		}
 	}
 
