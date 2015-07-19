@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.fsm.State;
 import com.colonidefeater.game.input.GameInput;
+import com.colonidefeater.game.utils.Direction;
 
 public enum PlayerDirectionState implements State<Entity> {
 	
@@ -28,6 +29,7 @@ public enum PlayerDirectionState implements State<Entity> {
 		private void handleInput(Entity entity) {
 			if (GameInput.isHolded(GameInput.UP)) {
 				stateCpt.get(PlayerDirectionState.class).changeState(UP);
+				stateCpt.looktoward = Direction.top;
 			}
 		}
 		
@@ -54,6 +56,7 @@ public enum PlayerDirectionState implements State<Entity> {
 		private void handleInput(Entity entity) {
 			if (!GameInput.isHolded(GameInput.UP)) {
 				stateCpt.get(PlayerDirectionState.class).changeState(SIDE);
+				stateCpt.looktoward = Direction.none;
 			}
 		}
 		

@@ -2,6 +2,6 @@ package com.colonidefeater.game.utils;
 
 public enum Direction {
 	
-	right, left, top, down;
+	none, right, left, top, down;
 
 }

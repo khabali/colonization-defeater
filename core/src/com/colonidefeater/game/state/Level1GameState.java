@@ -11,12 +11,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.colonidefeater.game.entity.EntityFactory;
+import com.colonidefeater.game.handlers.GameContactListener;
 import com.colonidefeater.game.handlers.ParallaxeBackground;
 import com.colonidefeater.game.input.GameInput;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.system.Box2dDebugRenderSystem;
 import com.colonidefeater.game.system.BulletSystem;
 import com.colonidefeater.game.system.CameraSystem;
+import com.colonidefeater.game.system.CollisionSystem;
 import com.colonidefeater.game.system.MapRenderSystem;
 import com.colonidefeater.game.system.SoldierSpawnSystem;
 import com.colonidefeater.game.system.SpriteRenderSystem;
@@ -63,7 +65,7 @@ public class Level1GameState extends GameStateAdapter {
 		backgrounds[1] = new ParallaxeBackground(mountains, 0.2f);
 		final Texture fixedBackground = AssetsManager.manager
 				.get(AssetsManager.BG_SKY);
-
+		
 		// --
 		ecsHub.setManager(new TagManager());
 		ecsHub.setSystem(new MapRenderSystem(tiledMap, fixedBackground,
@@ -73,8 +75,11 @@ public class Level1GameState extends GameStateAdapter {
 		ecsHub.setSystem(new TextureRenderSystem());
 		ecsHub.setSystem(new SoldierSpawnSystem(physicsHub, tiledMap));
 		ecsHub.setSystem(new StateMachineSystem());
+		ecsHub.setSystem(new CollisionSystem());
 		ecsHub.setSystem(new Box2dDebugRenderSystem(physicsHub));
 		ecsHub.initialize();
+		
+		physicsHub.setContactListener(new GameContactListener());
 
 		EntityFactory.createGround(ecsHub, physicsHub, tiledMap);
 		EntityFactory.createPlayer(ecsHub, physicsHub, tiledMap);

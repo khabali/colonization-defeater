@@ -25,9 +25,9 @@ public enum IdleSoldierState implements State<Entity> {
 			float playerx = target.getComponent(PhysicsCpt.class).body.getPosition().x;
 			float x = entity.getComponent(PhysicsCpt.class).body.getPosition().x;
 			if (playerx < x) {
-				entity.getComponent(StateMachineCpt.class).dir = Direction.right;
-			}else {
 				entity.getComponent(StateMachineCpt.class).dir = Direction.left;
+			}else {
+				entity.getComponent(StateMachineCpt.class).dir = Direction.right;
 			}
 		}
 

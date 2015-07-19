@@ -25,6 +25,10 @@ import static com.colonidefeater.game.utils.Constants.SOLDIER_PROP_BEHAVIOR;
 
 
 
+
+
+
+
 import java.util.Iterator;
 
 import com.artemis.Entity;
@@ -46,8 +50,10 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.AnimationCpt;
 import com.colonidefeater.game.component.BulletCpt;
+import com.colonidefeater.game.component.CollisionCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.PlayerControlled;
+import com.colonidefeater.game.component.TypeCpt;
 import com.colonidefeater.game.component.WeaponCpt;
 import com.colonidefeater.game.component.StateMachineCpt;
 import com.colonidefeater.game.component.TextureCpt;
@@ -60,6 +66,7 @@ import com.colonidefeater.game.fsm.soldier.IdleSoldierState;
 import com.colonidefeater.game.resources.AssetsManager;
 import com.colonidefeater.game.utils.Constants;
 import com.colonidefeater.game.utils.Direction;
+import com.colonidefeater.game.utils.EntityType;
 import com.colonidefeater.game.utils.MapBodyBuilder;
 import com.colonidefeater.game.weapon.GameWeapons;
 
@@ -85,8 +92,9 @@ public class EntityFactory {
 			body.createFixture(fixtureDef);
 			shape.dispose();
 		}
-
-		return new EntityBuilder(ecsHub).with(new PhysicsCpt(body)).build();
+		Entity e = new EntityBuilder(ecsHub).with(new TypeCpt(EntityType.GROUND), new PhysicsCpt(body)).build();
+		body.setUserData(e); // link entity to body
+		return e;
 	}
 	
 	public static Entity createSoldier(com.artemis.World ecsHub,
@@ -109,16 +117,18 @@ public class EntityFactory {
 		body.createFixture(fixtureDef);
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
-				.with(new AnimationCpt(AssetsManager.STICK_MAN),
+				.with(new TypeCpt(EntityType.ENEMY),
+						new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
-						new WeaponCpt(new GameWeapons.SimpleGun())).build();
+						new WeaponCpt(new GameWeapons.SimpleGun()),
+						new CollisionCpt()).build();
 		StateMachineCpt stateMachine = new StateMachineCpt();
+		e.edit().add(stateMachine);
 		if (behavior.equals("idle")) {
 			stateMachine.add(IdleSoldierState.class, e, IdleSoldierState.STAND_IDLE_SIDE);
 		}else if (behavior.equals("follower")) {
 			stateMachine.add(FollowerSoldierState.class, e, FollowerSoldierState.WALK_IDLE_SIDE);
 		}
-		e.edit().add(stateMachine);
 		body.setUserData(e); //link entity to body
 		return e;
 	}
@@ -170,7 +180,8 @@ public class EntityFactory {
 
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
-				.with(new AnimationCpt(AssetsManager.STICK_MAN),
+				.with(new TypeCpt(EntityType.PLAYER),
+						new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
 						new WeaponCpt(new GameWeapons.SimpleGun()),
 						new PlayerControlled()).tag("PLAYER").build();
@@ -201,17 +212,21 @@ public class EntityFactory {
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.isSensor = true;
+		//filter bullet's collision so it doesn't collid with its owner
+		switch (owner.getComponent(TypeCpt.class).type) {
+		case ENEMY:
+			fixtureDef.filter.groupIndex = -2; break;
+		default: break;
+		}
 		body.createFixture(fixtureDef);
 		shape.dispose();
 		//bullet direction
 		Direction dir = stateCpt.dir;
-		if (stateCpt.get(PlayerDirectionState.class).getCurrentState() == PlayerDirectionState.UP) {
-			dir = Direction.top;
-		}
-		if (stateCpt.get(PlayerDirectionState.class).getCurrentState() == PlayerDirectionState.DOWN) {
-			dir = Direction.down;
+		if (stateCpt.looktoward != Direction.none) {
+			dir = stateCpt.looktoward;
 		}
 		Entity e = new EntityBuilder(owner.getWorld()).with(
+				new TypeCpt(EntityType.BULLET),
 				new AnimationCpt(AssetsManager.FIRE), new PhysicsCpt(body),
 				new BulletCpt(from, dir)).build();
 		body.setUserData(e); //link entity to body
@@ -251,7 +266,8 @@ public class EntityFactory {
 			body.setUserData(type);
 			shape.dispose();
 			// TODO get type of power and load his sprite
-			Entity e = new EntityBuilder(ecsHub).with(new PhysicsCpt(body),
+			Entity e = new EntityBuilder(ecsHub).with(new TypeCpt(EntityType.WEAPONPOWER),
+					new PhysicsCpt(body),
 					new TextureCpt(AssetsManager.WP_H)).build();
 			body.setUserData(e); //link entity to body
 		}
