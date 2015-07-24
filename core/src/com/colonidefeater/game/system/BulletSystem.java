@@ -46,6 +46,8 @@ public class BulletSystem extends EntityProcessingSystem {
 		case top:
 			physicsCpt.body.setLinearVelocity(0, 20);
 			break;
+		default:
+			break;
 		}
 		
 		// bullet will be removed when out of screen or TODO++collides with

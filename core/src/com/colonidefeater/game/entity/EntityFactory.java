@@ -184,7 +184,8 @@ public class EntityFactory {
 						new AnimationCpt(AssetsManager.STICK_MAN),
 						new PhysicsCpt(body),
 						new WeaponCpt(new GameWeapons.SimpleGun()),
-						new PlayerControlled()).tag("PLAYER").build();
+						new PlayerControlled(),
+						new CollisionCpt()).tag("PLAYER").build();
 		StateMachineCpt stateMachine = new StateMachineCpt();
 		e.edit().add(stateMachine);
 		stateMachine.add(PlayerMovementState.class, e, PlayerMovementState.STAND);
@@ -202,10 +203,16 @@ public class EntityFactory {
 		//boolean goLeft = stateCpt.dir == Direction.left;
 		//from.y += 0.05;
 		//from.x += goLeft ? -0.5f : 0.5f;
+		//bullet direction
+		Direction dir = stateCpt.dir;
+		if (stateCpt.looktoward != Direction.none) {
+			dir = stateCpt.looktoward;
+		}
+		BulletCpt bullet = new BulletCpt(from, dir);
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.bullet = true;
-		bodyDef.position.set(from);
+		bodyDef.position.set(bullet.moveFrom);
 		final Body body = physicCpt.body.getWorld().createBody(bodyDef);
 		Shape shape = new CircleShape();
 		shape.setRadius(10 / Constants.PPM);
@@ -220,15 +227,10 @@ public class EntityFactory {
 		}
 		body.createFixture(fixtureDef);
 		shape.dispose();
-		//bullet direction
-		Direction dir = stateCpt.dir;
-		if (stateCpt.looktoward != Direction.none) {
-			dir = stateCpt.looktoward;
-		}
 		Entity e = new EntityBuilder(owner.getWorld()).with(
 				new TypeCpt(EntityType.BULLET),
 				new AnimationCpt(AssetsManager.FIRE), new PhysicsCpt(body),
-				new BulletCpt(from, dir)).build();
+				bullet).build();
 		body.setUserData(e); //link entity to body
 		return e;
 	}

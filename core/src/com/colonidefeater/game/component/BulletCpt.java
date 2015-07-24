@@ -28,6 +28,19 @@ public class BulletCpt extends Component {
 	
 	public void setDir(Direction d) {
 		dir = d;
+		switch (dir) {
+		case left:
+			moveFrom.x += -0.5;
+			break;
+		case right:
+			moveFrom.x += 0.5;
+			break;
+		case top:
+			moveFrom.y += 0.5;
+			break;
+		default:
+			break;
+		}
 	}
 
 }

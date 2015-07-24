@@ -13,7 +13,7 @@ import com.colonidefeater.game.utils.Direction;
 
 public class StateMachineCpt extends Component {
 	
-	public Direction dir;
+	public Direction dir = Direction.right;
 	public Direction looktoward = Direction.none;
 	//public StateMachine<Entity> stateMachine;
 	
