@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.colonidefeater.game.component.CollisionCpt;
 import com.colonidefeater.game.component.PhysicsCpt;
 import com.colonidefeater.game.component.TypeCpt;
+import com.colonidefeater.game.state.GameStateManager;
 import com.colonidefeater.game.utils.EntityType;
 
 @Wire
@@ -16,11 +17,13 @@ public class CollisionSystem extends EntityProcessingSystem {
 	private ComponentMapper<CollisionCpt> collisionCptMapper;
 	
 	private World physicsHub;
+	private GameStateManager gsm;
 
 	@SuppressWarnings("unchecked")
-	public CollisionSystem(World physicsHub) {
+	public CollisionSystem(World physicsHub, GameStateManager g) {
 		super(Aspect.getAspectForOne(CollisionCpt.class));
 		this.physicsHub = physicsHub;
+		gsm = g;
 	}
 
 	@Override
@@ -53,6 +56,12 @@ public class CollisionSystem extends EntityProcessingSystem {
 		eBullet.deleteFromWorld();
 		physicsHub.destroyBody(ePlayer.getComponent(PhysicsCpt.class).body);
 		ePlayer.deleteFromWorld();
+		endState();
+	}
+	
+	private void endState() {
+		//gsm.dispose();
+		gsm.goToState(GameStateManager.STATE_MENU);
 	}
 
 }

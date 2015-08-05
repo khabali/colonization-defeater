@@ -115,6 +115,29 @@ public class EntityFactory {
 		fixtureDef.shape = shape;
 		fixtureDef.filter.groupIndex = -2;
 		body.createFixture(fixtureDef);
+		
+		// FEET
+		float footSize = 5f;
+		float boundBoxH = enemyObject.getRectangle().height;
+		float boundBoxW = enemyObject.getRectangle().width;
+		final CircleShape foot = new CircleShape();
+		foot.setRadius(footSize / PPM);
+		foot.setPosition(new Vector2((footSize - boundBoxW) / 2 / PPM,
+				-boundBoxH / 2 / PPM));
+		fixtureDef.shape = foot;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 10f;
+		body.createFixture(fixtureDef);
+		// foot 2
+		foot.setPosition(new Vector2((boundBoxW - footSize) / 2 / PPM,
+				-boundBoxH / 2 / PPM));
+		fixtureDef.shape = foot;
+		fixtureDef.isSensor = true;
+		fixtureDef.density = 10f;
+		body.createFixture(fixtureDef);
+		shape.dispose();
+		foot.dispose();
+				
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
 				.with(new TypeCpt(EntityType.ENEMY),
@@ -156,7 +179,7 @@ public class EntityFactory {
 		fixtureDef.shape = shape;
 		body.createFixture(fixtureDef);
 
-		// FOOTS
+		// FEET
 		float footSize = 5f;
 		float boundBoxH = playerMapObject.getRectangle().height;
 		float boundBoxW = playerMapObject.getRectangle().width;
@@ -177,7 +200,7 @@ public class EntityFactory {
 		body.createFixture(fixtureDef);
 		shape.dispose();
 		foot.dispose();
-
+		
 		// -- create entity
 		Entity e = new EntityBuilder(ecsHub)
 				.with(new TypeCpt(EntityType.PLAYER),
@@ -245,6 +268,7 @@ public class EntityFactory {
 	 */
 	public static void createWeaponsPowers(com.artemis.World ecsHub,
 			World physicsHub, TiledMap map) {
+		/*
 		final MapLayer wpsLayer = map.getLayers().get(MAP_LAYER_WEAPONS);
 		for (MapObject power : wpsLayer.getObjects()) {
 			float x = (Float) power.getProperties().get(MAP_PROP_X);
@@ -273,6 +297,7 @@ public class EntityFactory {
 					new TextureCpt(AssetsManager.WP_H)).build();
 			body.setUserData(e); //link entity to body
 		}
+		*/
 	}
 
 }

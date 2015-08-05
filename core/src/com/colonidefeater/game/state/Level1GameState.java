@@ -75,7 +75,7 @@ public class Level1GameState extends GameStateAdapter {
 		ecsHub.setSystem(new TextureRenderSystem());
 		ecsHub.setSystem(new SoldierSpawnSystem(physicsHub, tiledMap));
 		ecsHub.setSystem(new StateMachineSystem());
-		ecsHub.setSystem(new CollisionSystem(physicsHub));
+		ecsHub.setSystem(new CollisionSystem(physicsHub, gsm));
 		ecsHub.setSystem(new Box2dDebugRenderSystem(physicsHub));
 		ecsHub.initialize();
 		
